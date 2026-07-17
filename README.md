@@ -6,9 +6,8 @@
 [![Security](https://img.shields.io/badge/Focus-Control--Flow%20Integrity-green.svg)](https://github.com/riscv/riscv-cfi)
 [![RTL](https://img.shields.io/badge/Design-RTL-orange.svg)](https://en.wikipedia.org/wiki/Register-transfer_level)
 [![FSM](https://img.shields.io/badge/Design-Finite%20State%20Machine-purple.svg)](https://en.wikipedia.org/wiki/Finite-state_machine)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Target Core: Sargantana](https://img.shields.io/badge/Target-Sargantana_Core-lightgrey.svg)](https://github.com/bsc-loca/sargantana)
-
+[![Proposal](https://img.shields.io/badge/Proposal-Phased_Implementation-yellow.svg)](https://github.com/bsc-loca/sargantana)
 ---
 
 This repository contains my **SystemVerilog** solution for the **Linux Foundation (LFX) Mentorship** coding challenge:
@@ -62,8 +61,3 @@ Supported commands:
 - **RISC-V Control-Flow Integrity (CFI) Extension**
 - **Sargantana RISC-V Core**
 
----
-
-## License
-
-Released under the **MIT License**.
