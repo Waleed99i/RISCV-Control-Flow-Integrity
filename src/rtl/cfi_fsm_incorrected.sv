@@ -1,4 +1,4 @@
-module cfi_fsm_modified (
+module cfi_fsm_incorrected (
     input  logic        clk,
     input  logic        reset,
     input  logic [31:0] packet
