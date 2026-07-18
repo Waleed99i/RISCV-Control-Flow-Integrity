@@ -1,12 +1,12 @@
 `timescale 1ns/1ps
 
-module cfi_fsm_tb;
+module cfi_fsm_modified_tb;
 
     logic clk;
     logic reset;
     logic [31:0] packet;
 
-    cfi_fsm dut(
+    cfi_fsm_modified dut(
         .clk(clk),
         .reset(reset),
         .packet(packet)
@@ -20,8 +20,8 @@ module cfi_fsm_tb;
 
     // VCD Dump
     initial begin
-        $dumpfile("build/cfi_fsm_tb.vcd");
-        $dumpvars(0,cfi_fsm_tb);
+        $dumpfile("build/cfi_fsm_modified_tb.vcd");
+        $dumpvars(0,cfi_fsm_modified_tb);
     end
 
     // Task to send one packet

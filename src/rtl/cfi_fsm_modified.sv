@@ -1,4 +1,4 @@
-module cfi_fsm (
+module cfi_fsm_modified (
     input  logic        clk,
     input  logic        reset,
     input  logic [31:0] packet
@@ -39,6 +39,7 @@ module cfi_fsm (
         next_state = state;
         case(state)
             IDLE : begin
+                label = data;
                 if(cmd == JUMP)
                     next_state = CHECK;
                 else
