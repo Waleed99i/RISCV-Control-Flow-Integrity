@@ -39,9 +39,11 @@ Control-Flow Integrity (CFI) prevents these attacks by ensuring that execution o
 
 This challenge captures the fundamental behavior of CFI using three states:
 
-- **IDLE** – Accepts commands and stores trusted labels.
-- **CHECK** – Waits for landing-pad verification.
-- **ERROR** – Permanent fault state entered whenever verification fails.
+| State | Encoding | Description |
+|-------|:--------:|-------------|
+| **IDLE** | `00` | Waits for incoming commands. Stores the secure label when a `SET` command is received and transitions to **CHECK** upon receiving `JUMP`. |
+| **CHECK** | `01` | Waits for a valid `LPAD` packet and compares its label against the stored secure label. |
+| **ERROR** | `10` | Permanent sticky error state entered whenever landing pad verification fails or an invalid command is received during verification. |
 
 Although simplified, the FSM reflects the core concept used by hardware-assisted CFI mechanisms in modern RISC-V processors.
 
@@ -133,7 +135,7 @@ The verification environment checks:
 
 ---
 
-# Waveforms
+# Waveform
 
 ## Successful Control Flow
 Its for 46 tests (`cfi_fsm_v4_tb`)
@@ -145,8 +147,24 @@ Its for 46 tests (`cfi_fsm_v4_tb`)
 </p>
 
 ---
+## Verification Summary
 
-## ModelSim Verification
+There were total 46 Tests that verifies mainly these 10 most important scenarios:
+
+| Test ID | Verification Scenario | Checks | Result |
+|:------:|------------------------|:------:|:------:|
+| 01 | Reset Functionality | FSM enters **IDLE** and clears the label register after reset. |  PASS |
+| 02 | Illegal Commands in IDLE | Verifies unknown commands are ignored while remaining in **IDLE**. |  PASS |
+| 03 | Valid Transaction #1 | Verifies **SET → JUMP → LPAD** sequence with a matching label. |  PASS |
+| 04 | Valid Transaction #2 | Repeats a complete valid transaction using a different secure label. |  PASS |
+| 05 | Multiple Label Updates | Verifies consecutive **SET** operations correctly overwrite the stored label. |  PASS |
+| 06 | Valid Transaction After Label Updates | Confirms the latest stored label is used during landing pad verification. |  PASS |
+| 07 | Continuous Packet Stream | Verifies multiple consecutive valid transactions without reset. |  PASS |
+| 08 | Unauthorized Landing Pad | Detects a mismatched landing pad and transitions to **ERROR**. |  PASS |
+| 09 | Sticky ERROR Verification | Verifies **SET**, **JUMP**, and **LPAD** are ignored once **ERROR** is entered. |  PASS |
+| 10 | Illegal Commands in ERROR | Confirms illegal commands cannot exit the sticky **ERROR** state. |  PASS |
+
+## Transcript(Just the Summary part)
 
 <p align="center">
 
