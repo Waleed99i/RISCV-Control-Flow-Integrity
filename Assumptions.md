@@ -111,36 +111,8 @@ This behavior provides deterministic handling of unspecified command values whil
 
 ---
 
-# 8. Sticky ERROR State
 
-### Assumption
-
-Once the FSM enters the ERROR state, it cannot return to IDLE without an external reset.
-
-### Justification
-
-A detected control-flow integrity violation should represent a terminal fault condition until software or hardware explicitly resets the system.
-
----
-
-# 9. Packet Format
-
-### Assumption
-
-The packet format is fixed throughout execution.
-
-| Bits | Meaning |
-|------|---------|
-| [31:24] | Command |
-| [23:0] | Data / Label |
-
-### Justification
-
-This packet format is defined by the coding challenge specification.
-
----
-
-# 10. State Encoding
+# 8. State Encoding
 
 ### Assumption
 
