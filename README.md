@@ -94,9 +94,22 @@ Supported commands:
 
 ---
 
+# Design Decisions and Assumptions
+
+Below are the Implementation details (Please Open both markdown files) :
+
+| Document | Description |
+|----------|-------------|
+| [`Design_Decisions.md`](Design_Decisions.md) | Architectural decisions and RTL implementation rationale. |
+| [`Assumptions.md`](Assumptions.md) | Assumptions made where the coding challenge specification leaves implementation details undefined. |
+
+
+---
+
 # RTL Implementation
 
-The RTL implementation consists of a single SystemVerilog module.
+
+The RTL implementation consists of a single SystemVerilog module : [`cfi_fsm.sv`](src/rtl/cfi_fsm.sv) 
 
 Main internal components:
 
@@ -116,10 +129,11 @@ Multiple self-checking testbenches were developed during implementation.
 
 | Testbench | Description |
 |------------|-------------|
-| `cfi_fsm_tb.sv` | Initial functional verification |
-| `cfi_fsm_v2_tb.sv` | Improved transcript formatting |
-| `cfi_fsm_v3_tb.sv` | 16 self-checking verification tests |
-| `cfi_fsm_v4_tb.sv` | Extended regression (46 passing checks) |
+| [`cfi_fsm_tb.sv`](src/tb/cfi_fsm_tb.sv) | Initial functional verification |
+| [`cfi_fsm_v2_tb.sv`](src/tb/cfi_fsm_v2_tb.sv) | Improved verification transcript |
+| [`cfi_fsm_v3_tb.sv`](src/tb/cfi_fsm_v3_tb.sv) | Extended functional verification |
+| [`cfi_fsm_v4_tb.sv`](src/tb/cfi_fsm_v4_tb.sv) | Final self-checking regression testbench (46 verification checks) |
+
 
 The verification environment checks:
 
@@ -132,6 +146,12 @@ The verification environment checks:
 - Illegal command handling
 - Stress testing
 - State transitions
+
+## Verification Strategy
+
+Kindly Open below markdown file to see my Verification methodology, regression strategy, and functional coverage :
+
+[`Verification_Strategy.md`](Verification_Strategy.md) 
 
 ---
 
@@ -206,9 +226,9 @@ Verification includes:
 
 ---
 
-# Future Work
+# Future Work 
 
-Possible extensions include:
+POSSIBLE extensions may include:
 
 - Shadow Stack support
 - Landing Pad instruction decoding
@@ -219,15 +239,24 @@ Possible extensions include:
 
 ---
 
-# References
+# References / Learning Material
 
-- RISC-V Control-Flow Integrity ISA Extension
-- Linux Foundation LFX Mentorship
-- Sargantana RISC-V Processor
+## CFI Specification
+- [RISC-V Control-Flow Integrity (CFI) Specification (Unpriv)](https://docs.riscv.org/reference/isa/unpriv/unpriv-cfi.html)
+- [RISC-V CFI Spec - (Priv)](https://docs.riscv.org/reference/isa/v20260120/priv/priv-cfi.html)
+
+## Sargantana Repository
+- [Sargantana RISC-V Processor](https://github.com/bsc-loca/sargantana)
+
+## PDFs of Spec
+- [riscv-privileged.pdf](References/riscv-privileged.pdf)
+- [riscv-spec.pdf](References/riscv-spec.pdf)
+
+## CVA6 Research Paper
+- [CVA6-CFI.pdf](References/CVA6-CFI.pdf)
 
 ---
-
-# Author
+# Contributor 
 
 **Muhammad Waleed Akram**
 
