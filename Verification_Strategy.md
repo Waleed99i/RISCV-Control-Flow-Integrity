@@ -31,10 +31,11 @@ Several versions of the testbench were created throughout development.
 
 | Testbench | Purpose |
 |------------|---------|
-| **cfi_fsm_tb.sv** | Initial functional verification of the FSM. |
-| **cfi_fsm_v2_tb.sv** | Improved verification output and simulation transcript. |
-| **cfi_fsm_v3_tb.sv** | Expanded functional coverage with additional verification scenarios. |
-| **cfi_fsm_v4_tb.sv** | Final regression testbench containing comprehensive self-checking verification and coverage reporting. |
+| [`cfi_fsm_tb.sv`](src/tb/cfi_fsm_tb.sv) | Initial functional verification of the FSM. |
+| [`cfi_fsm_v2_tb.sv`](src/tb/cfi_fsm_v2_tb.sv) | Improved verification output and simulation transcript. |
+| [`cfi_fsm_v3_tb.sv`](src/tb/cfi_fsm_v3_tb.sv) | Expanded functional coverage with additional verification scenarios. |
+| [`cfi_fsm_v4_tb.sv`](src/tb/cfi_fsm_v4_tb.sv) | Final regression testbench containing comprehensive self-checking verification and coverage reporting. |
+
 
 Each revision introduced additional verification scenarios while maintaining compatibility with the existing RTL implementation.
 
@@ -82,7 +83,6 @@ The regression suite automatically validates:
 
 - Normal operation
 - Error conditions
-- Boundary cases
 - Consecutive transactions
 - State persistence
 - Label integrity
@@ -123,9 +123,10 @@ Verification was performed using an open-source SystemVerilog simulation flow.
 |------|---------|
 | Icarus Verilog | RTL compilation and simulation |
 | GTKWave | Waveform visualization |
-| Makefile | Automated build and simulation |
+| [Makefile](Makefile) | Automated build and simulation |
 
 Simulation waveforms were generated in **VCD** format and analyzed to confirm correct FSM behavior during each verification scenario.
+I also simulated it on Modelsim on my Ubuntu. I am open to use any other tool as well upon your recommendation !
 
 ---
 

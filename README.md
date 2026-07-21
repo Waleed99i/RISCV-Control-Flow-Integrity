@@ -129,10 +129,10 @@ Multiple self-checking testbenches were developed during implementation.
 
 | Testbench | Description |
 |------------|-------------|
-| [`cfi_fsm_tb.sv`](src/tb/cfi_fsm_tb.sv) | Initial functional verification |
-| [`cfi_fsm_v2_tb.sv`](src/tb/cfi_fsm_v2_tb.sv) | Improved verification transcript |
-| [`cfi_fsm_v3_tb.sv`](src/tb/cfi_fsm_v3_tb.sv) | Extended functional verification |
-| [`cfi_fsm_v4_tb.sv`](src/tb/cfi_fsm_v4_tb.sv) | Final self-checking regression testbench (46 verification checks) |
+| [`cfi_fsm_tb.sv`](src/tb/cfi_fsm_tb.sv) | Initial functional verification(5 Tests) |
+| [`cfi_fsm_v2_tb.sv`](src/tb/cfi_fsm_v2_tb.sv) | Improved verification transcript(8 Tests) |
+| [`cfi_fsm_v3_tb.sv`](src/tb/cfi_fsm_v3_tb.sv) | Extended functional verification(16 Tests) |
+| [`cfi_fsm_v4_tb.sv`](src/tb/cfi_fsm_v4_tb.sv) | Final self-checking regression testbench (46 Tests/verification checks) |
 
 
 The verification environment checks:
