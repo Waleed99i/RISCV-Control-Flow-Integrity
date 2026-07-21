@@ -1,0 +1,165 @@
+VCD info: dumpfile build/cfi_fsm_v4_tb.vcd opened for output.
+
+============================================================
+           CFI FSM RTL Verification Environment
+============================================================
+
+------------------------------------------------------------
+[TEST 01] Reset Functionality
+------------------------------------------------------------
+[PASS] FSM enters IDLE after reset
+[PASS] Label cleared after reset
+
+------------------------------------------------------------
+[TEST] Illegal Commands in IDLE
+------------------------------------------------------------
+36000 | CMD=ILGL | DATA=111111 | STATE=IDLE  | LABEL=000000
+[PASS] Unknown command ignored
+46000 | CMD=ILGL | DATA=222222 | STATE=IDLE  | LABEL=000000
+[PASS] Unknown command ignored
+56000 | CMD=ILGL | DATA=333333 | STATE=IDLE  | LABEL=000000
+[PASS] Unknown command ignored
+
+------------------------------------------------------------
+[TEST 02] Valid Transaction #1
+------------------------------------------------------------
+66000 | CMD=SET  | DATA=abcdef | STATE=IDLE  | LABEL=abcdef
+[PASS] SET keeps FSM in IDLE
+[PASS] Secure label stored
+76000 | CMD=JUMP | DATA=000000 | STATE=CHECK | LABEL=abcdef
+[PASS] JUMP enters CHECK state
+86000 | CMD=LPAD | DATA=abcdef | STATE=IDLE  | LABEL=abcdef
+[PASS] Matching LPAD returns to IDLE
+
+------------------------------------------------------------
+[TEST 03] Valid Transaction #2
+------------------------------------------------------------
+96000 | CMD=SET  | DATA=555555 | STATE=IDLE  | LABEL=555555
+[PASS] SET keeps FSM in IDLE
+[PASS] Secure label stored
+106000 | CMD=JUMP | DATA=000000 | STATE=CHECK | LABEL=555555
+[PASS] JUMP enters CHECK state
+116000 | CMD=LPAD | DATA=555555 | STATE=IDLE  | LABEL=555555
+[PASS] Matching LPAD returns to IDLE
+
+------------------------------------------------------------
+[TEST] Multiple Label Updates
+------------------------------------------------------------
+126000 | CMD=SET  | DATA=111111 | STATE=IDLE  | LABEL=111111
+[PASS] SET keeps FSM in IDLE
+[PASS] Secure label stored
+136000 | CMD=SET  | DATA=222222 | STATE=IDLE  | LABEL=222222
+[PASS] SET keeps FSM in IDLE
+[PASS] Secure label stored
+146000 | CMD=SET  | DATA=333333 | STATE=IDLE  | LABEL=333333
+[PASS] SET keeps FSM in IDLE
+[PASS] Secure label stored
+156000 | CMD=SET  | DATA=444444 | STATE=IDLE  | LABEL=444444
+[PASS] SET keeps FSM in IDLE
+[PASS] Secure label stored
+[PASS] Latest label retained
+
+------------------------------------------------------------
+[TEST 05] Valid Transaction After Label Updates
+------------------------------------------------------------
+166000 | CMD=SET  | DATA=444444 | STATE=IDLE  | LABEL=444444
+[PASS] SET keeps FSM in IDLE
+[PASS] Secure label stored
+176000 | CMD=JUMP | DATA=000000 | STATE=CHECK | LABEL=444444
+[PASS] JUMP enters CHECK state
+186000 | CMD=LPAD | DATA=444444 | STATE=IDLE  | LABEL=444444
+[PASS] Matching LPAD returns to IDLE
+
+------------------------------------------------------------
+[TEST] Continuous Packet Stream
+------------------------------------------------------------
+196000 | CMD=SET  | DATA=654321 | STATE=IDLE  | LABEL=654321
+[PASS] SET keeps FSM in IDLE
+[PASS] Secure label stored
+206000 | CMD=JUMP | DATA=000000 | STATE=CHECK | LABEL=654321
+[PASS] Entered CHECK
+216000 | CMD=LPAD | DATA=654321 | STATE=IDLE  | LABEL=654321
+[PASS] Returned to IDLE
+226000 | CMD=JUMP | DATA=000000 | STATE=CHECK | LABEL=654321
+[PASS] Entered CHECK
+236000 | CMD=LPAD | DATA=654321 | STATE=IDLE  | LABEL=654321
+[PASS] Returned to IDLE
+246000 | CMD=JUMP | DATA=000000 | STATE=CHECK | LABEL=654321
+[PASS] Entered CHECK
+256000 | CMD=LPAD | DATA=654321 | STATE=IDLE  | LABEL=654321
+[PASS] Returned to IDLE
+
+------------------------------------------------------------
+[TEST] Unauthorized Landing Pad
+------------------------------------------------------------
+266000 | CMD=SET  | DATA=cafebe | STATE=IDLE  | LABEL=cafebe
+[PASS] SET keeps FSM in IDLE
+[PASS] Secure label stored
+276000 | CMD=JUMP | DATA=000000 | STATE=CHECK | LABEL=cafebe
+[PASS] Entered CHECK
+286000 | CMD=LPAD | DATA=123456 | STATE=ERROR | LABEL=cafebe
+[PASS] Incorrect LPAD detected
+
+------------------------------------------------------------
+[TEST] Sticky ERROR Verification
+------------------------------------------------------------
+296000 | CMD=SET  | DATA=aaaaaa | STATE=ERROR | LABEL=cafebe
+[PASS] ERROR ignores SET
+306000 | CMD=JUMP | DATA=000000 | STATE=ERROR | LABEL=cafebe
+[PASS] ERROR ignores JUMP
+316000 | CMD=LPAD | DATA=aaaaaa | STATE=ERROR | LABEL=cafebe
+[PASS] ERROR ignores LPAD
+
+------------------------------------------------------------
+[TEST] Illegal Commands in ERROR
+------------------------------------------------------------
+326000 | CMD=ILGL | DATA=123456 | STATE=ERROR | LABEL=cafebe
+[PASS] Illegal command keeps ERROR
+336000 | CMD=ILGL | DATA=123456 | STATE=ERROR | LABEL=cafebe
+[PASS] Illegal command keeps ERROR
+346000 | CMD=ILGL | DATA=123456 | STATE=ERROR | LABEL=cafebe
+[PASS] Illegal command keeps ERROR
+356000 | CMD=ILGL | DATA=123456 | STATE=ERROR | LABEL=cafebe
+[PASS] Illegal command keeps ERROR
+366000 | CMD=ILGL | DATA=123456 | STATE=ERROR | LABEL=cafebe
+[PASS] Illegal command keeps ERROR
+
+============================================================
+                 Verification Summary
+============================================================
+Tests Executed : 46
+Tests Passed   : 46
+Tests Failed   : 0
+
+State Coverage
+----------------
+IDLE   : 18
+CHECK  : 7
+ERROR  : 9
+
+Command Coverage
+----------------
+SET     : 10
+JUMP    : 8
+LPAD    : 8
+ILLEGAL : 8
+
+OVERALL RESULT : PASS
+============================================================
+
+Scenario Coverage
+-------------------------------
+[PASS] Reset
+[PASS] Label Storage
+[PASS] Label Overwrite
+[PASS] Valid Control Flow
+[PASS] Invalid Landing Pad
+[PASS] Multiple Transactions
+[PASS] Continuous Packet Stream
+[PASS] Sticky ERROR
+[PASS] Illegal Commands
+[PASS] State Transitions
+
+Verification Complete.
+src/tb/cfi_fsm_v4_tb.sv:471: $finish called at 386000 (1ps)
+gtkwave build/cfi_fsm_v4_tb.vcd

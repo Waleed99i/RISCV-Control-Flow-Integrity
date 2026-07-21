@@ -1,0 +1,18 @@
+VCD info: dumpfile build/cfi_fsm_tb.vcd opened for output.
+
+TEST START
+
+TEST1 : SET
+
+TEST2 : JUMP
+
+TEST3 : Correct LPAD
+
+TEST4 : Wrong LPAD
+
+TEST5 : ERROR forever
+
+ALL TESTS COMPLETED
+
+src/tb/cfi_fsm_tb.sv:74: $finish called at 116000 (1ps)
+gtkwave build/cfi_fsm_tb.vcd

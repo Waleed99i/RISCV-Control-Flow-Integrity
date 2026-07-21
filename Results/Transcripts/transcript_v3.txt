@@ -1,0 +1,68 @@
+VCD info: dumpfile build/cfi_fsm_v3_tb.vcd opened for output.
+
+==============================================
+      CFI FSM VERIFICATION SUITE
+==============================================
+
+Time=26000 CMD=01 DATA=abcdef STATE=0 LABEL=abcdef
+[PASS] SET keeps IDLE
+[PASS] Label stored
+Time=36000 CMD=02 DATA=000000 STATE=1 LABEL=abcdef
+[PASS] JUMP -> CHECK
+Time=46000 CMD=03 DATA=abcdef STATE=0 LABEL=abcdef
+[PASS] Authorized LPAD
+Time=56000 CMD=01 DATA=555555 STATE=0 LABEL=555555
+[PASS] Label updated #1
+Time=66000 CMD=02 DATA=000000 STATE=1 LABEL=555555
+[PASS] CHECK entered
+Time=76000 CMD=03 DATA=555555 STATE=0 LABEL=555555
+[PASS] Transaction #2
+Time=86000 CMD=01 DATA=cafebe STATE=0 LABEL=cafebe
+[PASS] Label updated #2
+Time=96000 CMD=02 DATA=000000 STATE=1 LABEL=cafebe
+Time=106000 CMD=03 DATA=cafebe STATE=0 LABEL=cafebe
+[PASS] Transaction #3
+Time=116000 CMD=01 DATA=111111 STATE=0 LABEL=111111
+[PASS] Label updated #3
+Time=126000 CMD=02 DATA=000000 STATE=1 LABEL=111111
+Time=136000 CMD=03 DATA=123456 STATE=2 LABEL=111111
+[PASS] Unauthorized LPAD
+Time=146000 CMD=01 DATA=999999 STATE=2 LABEL=111111
+[PASS] ERROR ignores SET
+Time=156000 CMD=02 DATA=000000 STATE=2 LABEL=111111
+[PASS] ERROR ignores JUMP
+Time=166000 CMD=03 DATA=999999 STATE=2 LABEL=111111
+[PASS] ERROR ignores LPAD
+Time=176000 CMD=ff DATA=aaaaaa STATE=2 LABEL=111111
+[PASS] Illegal command
+Time=186000 CMD=77 DATA=bbbbbb STATE=2 LABEL=111111
+[PASS] Random command
+
+==============================================
+Verification Summary
+==============================================
+Tests Passed : 16
+Tests Failed : 0
+
+State Coverage
+IDLE   : Covered
+CHECK  : Covered
+ERROR  : Covered
+
+Command Coverage
+SET    : Covered
+JUMP   : Covered
+LPAD   : Covered
+Illegal: Covered
+
+Scenario Coverage
+Label Storage          : Covered
+Multiple Label Updates : Covered
+Multiple Transactions  : Covered
+Authorized LPAD        : Covered
+Unauthorized LPAD      : Covered
+Sticky ERROR           : Covered
+
+OVERALL RESULT : PASS
+src/tb/cfi_fsm_v3_tb.sv:153: $finish called at 206000 (1ps)
+gtkwave build/cfi_fsm_v3_tb.vcd

@@ -1,0 +1,26 @@
+VCD info: dumpfile build/cfi_fsm_v2_tb.vcd opened for output.
+
+========================================
+     CFI FSM VERIFICATION START
+========================================
+
+[PASS] stores label and remains in IDLE
+[PASS]         JUMP moves IDLE -> CHECK
+[PASS]    Matching LPAD returns to IDLE
+[PASS]         Second JUMP enters CHECK
+[PASS]          Wrong LPAD enters ERROR
+[PASS]                ERROR ignores SET
+[PASS]               ERROR ignores JUMP
+[PASS]               ERROR ignores LPAD
+
+========================================
+Verification Summary
+----------------------------------------
+Tests Passed : 8
+Tests Failed : 0
+========================================
+
+********** ALL TESTS PASSED **********
+
+src/tb/cfi_fsm_v2_tb.sv:120: $finish called at 116000 (1ps)
+gtkwave build/cfi_fsm_v2_tb.vcd

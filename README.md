@@ -188,9 +188,22 @@ There were total 46 Tests that verifies mainly these 10 most important scenarios
 
 <p align="center">
 
-<img src="Results/cfi_fsm_v4_4.png">
+<img src="Results/Screenshots/cfi_fsm_v4_4.png">
 
 </p>
+
+---
+
+## Simulation Transcripts
+
+Above one is just the Summary part for [`cfi_fsm_v4_tb`](src/tb/cfi_fsm_v4_tb.sv). While the Simulation transcripts for each testbench are available under the `Results/Transcripts/` directory as txt files. Also their screenshots are under `Results/Screenshots`.
+
+| Testbench | Transcript | 
+|------------|------------|
+| [`cfi_fsm_tb`](src/tb/cfi_fsm_tb.sv) | [`transcript.txt`](Results/Transcripts/transcript.txt) | 
+| [`cfi_fsm_v2_tb`](src/tb/cfi_fsm_v2_tb.sv) | [`transcript_v2.txt`](Results/Transcripts/transcript_v2.txt) | 
+| [`cfi_fsm_v3_tb`](src/tb/cfi_fsm_v3_tb.sv) | [`transcript_v3.txt`](Results/Transcripts/transcript_v3.txt) | 
+| [`cfi_fsm_v4_tb`](src/tb/cfi_fsm_v4_tb.sv) | [`transcript_v4.txt`](Results/Transcripts/transcript_v4.txt) | 
 
 ---
 
