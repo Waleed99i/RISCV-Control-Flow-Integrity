@@ -172,9 +172,7 @@ Only destinations beginning with LPAD are considered valid indirect branch targe
 The overall process can be visualized as (I drew it on draw.io)
 
 <p align="center">
-
-<img src="docs/zicfilp_2.png">
-
+  <img src="../../docs/zicfilp_2.png" alt="ZicFilp" width="500">
 </p>
 
 If the first instruction is not LPAD, execution is immediately rejected.
@@ -234,9 +232,7 @@ One of the important fields inside the instruction is the **<mark class="bg-yell
 The specification provides the complete instruction encoding.
 
 <p align="center">
-
-<img src="docs/zicfilp_bit_field.png">
-
+  <img src="../../docs/zicfilp_bit_field.png" alt="ZicFilp" width="700">
 </p>
 
 
@@ -280,9 +276,7 @@ The landing pad label solves this problem.
 The processor verifies (made below diagram in draw.io)
 
 <p align="center">
-
-<img src="docs/zicfilp_label.png">
-
+  <img src="../../docs/zicfilp_label.png" width="530">
 </p>
 
 Only the correct landing pad is accepted.
