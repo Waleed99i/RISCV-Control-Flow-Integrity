@@ -281,6 +281,24 @@ The processor verifies (made below diagram in draw.io)
 
 Only the correct landing pad is accepted.
 
+## LPAD operation
+
+```verilog
+if (xLPE == 1 && ELP == LP_EXPECTED)
+    // If PC not 4-byte aligned then software-check exception
+    if pc[1:0] != 0
+        raise software-check exception
+    // If landing pad label not matched -> software-check exception
+    else if (inst.LPL != x7[31:12] && inst.LPL != 0)
+        raise software-check exception
+    else
+        ELP = NO_LP_EXPECTED
+else
+    no-op
+endif
+```
+
+
 * * *
 
 # Real-Life Analogy
