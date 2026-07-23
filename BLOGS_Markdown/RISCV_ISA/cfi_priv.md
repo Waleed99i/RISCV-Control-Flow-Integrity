@@ -1,7 +1,7 @@
 # Understanding the RISC-V Control-Flow Integrity (CFI) ISA - Part 3: Privileged Architecture
 
 <p align="center">
-  <img src="../../docs/riscv.png" alt="riscv" width="500">
+  <img src="../../docs/riscv.png" alt="riscv" width="700">
 </p>
 
 
@@ -184,7 +184,7 @@ Instead, hardware memory protection ensures that only authorized Shadow Stack op
 The complete CFI flow can now be viewed as
 
 <p align="center">
-  <img src="../../docs/priv_3.png" alt="priv3" width="500">
+  <img src="../../docs/priv_3.png" alt="priv3" width="300">
 </p>
 
 
