@@ -1,5 +1,9 @@
 # Understanding the RISC-V Control-Flow Integrity (CFI) ISA - Part 2: Shadow Stack (Zicfiss)
 
+<p align="center">
+  <img src="../../docs/riscv.png" alt="riscv" width="500">
+</p>
+
 ## Introduction
 
 In the previous blog, I explored **Landing Pads (Zicfilp)**, which protect **forward-edge control flow** by ensuring that indirect branches only reach authorized destinations.

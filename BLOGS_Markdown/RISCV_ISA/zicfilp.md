@@ -1,4 +1,9 @@
 # Understanding the RISC-V Control-Flow Integrity (CFI) ISA - Part 1: Landing Pads (Zicfilp) 
+
+<p align="center">
+  <img src="../../docs/riscv.png" alt="riscv" width="500">
+</p>
+
 ## Introduction
 
 I started studying the recently **RISC-V Control-Flow Integrity (CFI)** ISA extensions. I wanted to first understand **why these extensions exist** and **<mark class="bg-yellow-200 dark:bg-yellow-500/30">what security problems they solve</mark>**<mark class="bg-yellow-200 dark:bg-yellow-500/30">.</mark>
