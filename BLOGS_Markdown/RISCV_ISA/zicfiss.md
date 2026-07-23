@@ -1,7 +1,7 @@
 # Understanding the RISC-V Control-Flow Integrity (CFI) ISA - Part 2: Shadow Stack (Zicfiss)
 
 <p align="center">
-  <img src="../../docs/riscv.png" alt="riscv" width="500">
+  <img src="../../docs/riscv.png" alt="riscv" width="700">
 </p>
 
 ## Introduction

@@ -1,7 +1,7 @@
 # Understanding the RISC-V Control-Flow Integrity (CFI) ISA - Part 1: Landing Pads (Zicfilp) 
 
 <p align="center">
-  <img src="../../docs/riscv.png" alt="riscv" width="500">
+  <img src="../../docs/riscv.png" alt="riscv" width="700">
 </p>
 
 ## Introduction
@@ -177,7 +177,7 @@ Only destinations beginning with LPAD are considered valid indirect branch targe
 The overall process can be visualized as (I drew it on draw.io)
 
 <p align="center">
-  <img src="../../docs/zicfilp_2.png" alt="ZicFilp" width="500">
+  <img src="../../docs/zicfilp_2.png" alt="ZicFilp" width="400">
 </p>
 
 If the first instruction is not LPAD, execution is immediately rejected.
@@ -281,7 +281,7 @@ The landing pad label solves this problem.
 The processor verifies (made below diagram in draw.io)
 
 <p align="center">
-  <img src="../../docs/zicfilp_label.png" width="530">
+  <img src="../../docs/zicfilp_label.png" width="500">
 </p>
 
 Only the correct landing pad is accepted.
