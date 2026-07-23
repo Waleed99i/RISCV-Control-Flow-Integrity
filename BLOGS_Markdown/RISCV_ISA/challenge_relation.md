@@ -80,7 +80,9 @@ Instead of implementing an entire superscalar processor, the challenge models th
 
 Although small, this state machine captures the essential behavior of Landing Pad verification.
 
-![](https://cdn.hashnode.com/uploads/covers/6977ac65081bbee97e86d932/04e4f1c3-a66a-4a31-99fe-bd00cae853c8.png align="center")
+<p align="center">
+  <img src="../../docs/relation_3.png" alt="relate" width="450">
+</p>
 
 * * *
 
@@ -97,7 +99,7 @@ The challenge defines three commands.
 Instead of decoding real instructions, the challenge communicates through simple packets.
 
 <p align="center">
-  <img src="../../docs/relation_3.png" alt="relate" width="450">
+  <img src="../../docs/zicfilp_bit_field.png" alt="relate" width="700">
 </p>
 
 
