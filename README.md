@@ -1,4 +1,4 @@
-# RISC-V Control-Flow Integrity (CFI) FSM
+# RISC-V Control-Flow Integrity (CFI) 
 
 <p align="center">
 
@@ -16,6 +16,12 @@
 
 
 </p>
+
+
+<p align="center">
+  <img src="docs/riscv.png" alt="riscv" width="700">
+</p>
+
 
 ---
 
