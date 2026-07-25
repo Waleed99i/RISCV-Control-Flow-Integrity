@@ -1,0 +1,179 @@
+\chapter{Decode Stage}
+
+\section{Overview}
+
+The Decode stage receives fetched instructions from Fetch-2 and converts them into an internal
+representation suitable for later pipeline stages.
+
+Its responsibilities include:
+\begin{itemize}
+  \item decoding the instruction opcode,
+  \item extracting source and destination registers,
+  \item generating immediate values,
+  \item identifying instruction formats,
+  \item producing control information,
+  \item forwarding decoded instructions to the Rename stage.
+\end{itemize}
+
+This stage forms the interface between instruction fetch and out-of-order execution.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/id_stage/rtl/decoder.sv}
+  \rtlitem{rtl/datapath/rtl/id_stage/rtl/immediate.sv}
+\end{rtlrefs}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.35\textwidth]{ch06_decode_overview.png}
+  \caption{Decode stage: F2-to-D $\rightarrow$ Decoder $\rightarrow$ Instruction Queue}
+  \label{fig:decode-overview}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.45\textwidth]{ch06_decode_detail.png}
+  \caption{Detailed signal view of the Decode stage}
+  \label{fig:decode-detail}
+\end{figure}
+
+\section{Instruction Decode}
+
+The Decoder interprets the binary instruction according to the RISC-V ISA.
+It identifies:
+\begin{itemize}
+  \item instruction format,
+  \item functional unit,
+  \item register operands,
+  \item immediate usage,
+  \item memory operations,
+  \item branch instructions,
+  \item CSR accesses,
+  \item floating-point instructions,
+  \item vector instructions.
+\end{itemize}
+
+The decoded information is forwarded toward Rename.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/id_stage/rtl/decoder.sv}
+\end{rtlrefs}
+
+\section{Immediate Generation}
+
+Many RISC-V instructions contain embedded immediate fields.
+The Immediate Generator extracts these fields and reconstructs complete signed values
+according to the instruction format.
+
+Supported formats include:
+\begin{itemize}
+  \item I-type
+  \item S-type
+  \item B-type
+  \item U-type
+  \item J-type
+\end{itemize}
+
+These immediates are later consumed by the ALU, Branch Unit, and Address Generation Unit.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/id_stage/rtl/immediate.sv}
+\end{rtlrefs}
+
+\section{Opcode Decoding}
+
+Opcode decoding determines the exact class of instruction.
+Examples include:
+\begin{itemize}
+  \item Arithmetic
+  \item Logical
+  \item Branch
+  \item Jump
+  \item Load
+  \item Store
+  \item Floating Point
+  \item SIMD
+  \item CSR
+  \item System
+\end{itemize}
+
+The Decoder produces internal control signals used by downstream stages to select the
+appropriate execution unit.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/id_stage/rtl/decoder.sv}
+\end{rtlrefs}
+
+\section{Control Signal Generation}
+
+Based on the decoded instruction, the Decode stage generates the control information required
+throughout the remainder of the pipeline.
+
+These signals specify:
+\begin{itemize}
+  \item destination register validity,
+  \item operand selection,
+  \item ALU operation,
+  \item branch type,
+  \item memory access type,
+  \item CSR operation,
+  \item vector operation,
+  \item floating-point operation.
+\end{itemize}
+
+These control signals accompany the instruction into the Rename stage.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/id_stage/rtl/decoder.sv}
+  \rtlitem{rtl/control_unit/rtl/control_unit.sv}
+\end{rtlrefs}
+
+\section{Output to Rename Stage}
+
+After decoding completes, the instruction is forwarded to the Rename stage.
+
+At this point the instruction has:
+\begin{itemize}
+  \item decoded opcode,
+  \item source registers,
+  \item destination register,
+  \item immediate value,
+  \item generated control signals.
+\end{itemize}
+
+The Rename stage will subsequently eliminate false register dependencies using register
+renaming before dispatching instructions toward execution.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/id_stage/rtl/decoder.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/rename_table.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/instruction_queue.sv}
+\end{rtlrefs}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.75\textwidth]{ch06_decode_to_rename.png}
+  \caption{Decoded instructions flowing from the Decode stage into the Rename stage}
+  \label{fig:decode-to-rename}
+\end{figure}
+
+\subsection*{Example (adapted from \texttt{doc/specification/decoder\_specification})}
+
+The cases are:
+
+\begin{itemize}
+  \item Cycle 1: Invalid input $\rightarrow$ invalid output.
+  \item Cycle 2: Exception input $\rightarrow$ exception output and not decoded.
+  \item Cycle 3: Regular case, valid input, not illegal instruction, and signed operation.
+  \item Cycle 4: Regular case again, but it has the power to change the PC.
+  \item Cycle 5: Case with illegal instruction, hence exception valid to 1.
+  \item Cycle 6: Case of the fence with the special signal to 1.
+\end{itemize}
+
+In the following figure we can see all the cases mentioned above.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{ch06_decoder_waveform.png}
+  \caption{Decoder timing waveform illustrating the six example cases}
+  \label{fig:decoder-waveform}
+\end{figure}

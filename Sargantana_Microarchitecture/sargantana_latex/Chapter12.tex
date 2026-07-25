@@ -1,0 +1,158 @@
+\chapter{Commit Stage}
+
+\section{Overview}
+
+The Commit stage is the final stage of the Sargantana pipeline and is responsible for updating
+the architectural state in program order. Although instructions may execute out of order, they
+must always retire sequentially to preserve the behavior defined by the RISC-V ISA.
+
+Only instructions that have successfully completed execution and whose older instructions have
+already retired are allowed to commit. This guarantees precise exceptions and ensures that
+speculative execution remains invisible to software.
+
+The commit stage therefore represents the point at which speculative results become
+architecturally permanent.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}
+  \rtlitem{rtl/control_unit/rtl/control_unit.sv}
+  \rtlitem{rtl/datapath/rtl/datapath.sv}
+\end{rtlrefs}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{ch12_commit_overview.png}
+  \caption{Commit stage in context, highlighting the decode-to-commit control path}
+  \label{fig:commit-overview}
+\end{figure}
+
+\section{Reorder Buffer (ROB)}
+
+Although the repository does not contain a standalone module named \rtl{rob.sv}, the
+reorder/retirement functionality is implemented through the \textbf{Graduation List}, together with the
+rename structures and control logic.
+
+The Graduation List maintains the order of all in-flight instructions from dispatch until retirement.
+
+For each instruction it tracks information such as:
+\begin{itemize}
+  \item destination physical register
+  \item completion status
+  \item exception status
+  \item branch information
+  \item retirement eligibility
+\end{itemize}
+
+When execution finishes, the corresponding entry is marked as completed. The Commit stage
+continuously checks the oldest valid entry. If the instruction has completed without exceptions, it
+is retired.
+
+Thus, the Graduation List performs the architectural role traditionally associated with a Reorder
+Buffer (ROB).
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/rename_table.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/free_list.sv}
+\end{rtlrefs}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{ch12_reorder_buffer.png}
+  \caption{Graduation List acting as the Reorder Buffer: recovery and commit signal paths highlighted}
+  \label{fig:reorder-buffer}
+\end{figure}
+
+\section{In-Order Retirement}
+
+Although execution is highly parallel, retirement always occurs in program order.
+
+For each instruction, the Commit stage performs several checks before retirement:
+\begin{itemize}
+  \item Has execution completed?
+  \item Did the instruction raise an exception?
+  \item Is it the oldest instruction?
+  \item Are all previous instructions already retired?
+\end{itemize}
+
+Only after satisfying these conditions are the architectural structures updated.
+
+Retirement includes:
+\begin{itemize}
+  \item updating the architectural register mapping
+  \item releasing obsolete physical registers
+  \item committing memory operations
+  \item updating CSR state if required
+  \item removing the instruction from the Graduation List
+\end{itemize}
+
+This mechanism ensures that software observes execution exactly as if instructions had been
+executed sequentially.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/free_list.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/rename_table.sv}
+\end{rtlrefs}
+
+\section{Exception Handling}
+
+One of the primary responsibilities of the Commit stage is precise exception handling.
+
+If an instruction reports an exception during execution, retirement stops when that instruction
+reaches the head of the Graduation List.
+
+The processor then:
+\begin{itemize}
+  \item flushes younger speculative instructions
+  \item restores the correct architectural state
+  \item redirects the PC to the exception handler
+  \item updates the required CSRs
+  \item resumes execution from the exception vector
+\end{itemize}
+
+Since no younger instruction has committed yet, software observes a perfectly precise
+exception.
+
+This behavior is one of the major advantages of separating execution from retirement.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/control_unit/rtl/control_unit.sv}
+  \rtlitem{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}
+  \rtlitem{rtl/datapath/interface_csr/rtl/csr_interface.sv}
+\end{rtlrefs}
+
+\section{Pipeline Flush and Recovery}
+
+Whenever speculation proves incorrect, the Commit stage coordinates recovery.
+
+Typical recovery events include:
+\begin{itemize}
+  \item Branch misprediction
+  \item Exceptions
+  \item Interrupts
+  \item System reset
+  \item CSR redirection
+\end{itemize}
+
+Recovery generally involves:
+\begin{enumerate}
+  \item stopping retirement,
+  \item flushing younger instructions,
+  \item restoring the correct rename state,
+  \item recovering the free list,
+  \item redirecting the Program Counter,
+  \item restarting instruction fetch.
+\end{enumerate}
+
+Because retirement is always in-order, recovery restores the processor to a precise architectural
+state.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/control_unit/rtl/control_unit.sv}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/rtl/branch_predictor.sv}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/rtl/if_stage_1.sv}
+  \rtlitem{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/rename_table.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/free_list.sv}
+\end{rtlrefs}

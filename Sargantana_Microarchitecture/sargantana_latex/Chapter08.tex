@@ -1,0 +1,129 @@
+\chapter{Register Read Stage}
+
+\section{Overview}
+
+Following register renaming, instructions enter the Register Read (RR) stage. At this point, all
+architectural register references have already been converted into physical register identifiers.
+
+The purpose of this stage is to obtain the actual operand values required for execution.
+
+In Sargantana, the Register Read stage is centered around the physical register file.
+
+RTL location:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/rr\_stage/}
+\end{center}
+
+Primary implementation:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/rr\_stage/rtl/regfile.sv}
+\end{center}
+
+This stage receives renamed instructions from the Rename stage and forwards operand values
+toward the Execution stage.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.5\textwidth]{ch08_register_read_overview.png}
+  \caption{Register Read stage: RFiles, Bypass, and Collision Detection}
+  \label{fig:register-read-overview}
+\end{figure}
+
+\section{Register File}
+
+The register file stores all physical register values currently available inside the processor.
+Unlike a simple in-order processor, the register file is accessed using physical register numbers
+generated during register renaming.
+
+The module is implemented in:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/rr\_stage/rtl/regfile.sv}
+\end{center}
+
+The register file supports:
+\begin{itemize}
+  \item Reading source operands
+  \item Writing completed results back into physical registers
+  \item Supplying operands to multiple execution units
+\end{itemize}
+
+This module serves as the central storage element for operand values.
+
+\section{Operand Read}
+
+Once physical register identifiers are available, the register file reads the corresponding operand
+values.
+
+For an instruction:
+\begin{verbatim}
+ADD P17, P4, P8
+\end{verbatim}
+
+the Register Read stage performs:
+\begin{verbatim}
+Read P4
+Read P8
+  |
+Operand A
+Operand B
+  |
+Execution Stage
+\end{verbatim}
+
+This process occurs every cycle for all issued instructions.
+
+The implementation is handled by:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/rr\_stage/rtl/regfile.sv}
+\end{center}
+
+\section{Operand Forwarding}
+
+Waiting for every instruction to write back before reading operands would significantly reduce
+performance. To minimize stalls, recently computed values may be forwarded directly from
+execution units.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{ch08_bypass_network.png}
+  \caption{Conceptual bypass path: ALU Result $\rightarrow$ Bypass Network $\rightarrow$ Register Read Stage $\rightarrow$ Execution}
+  \label{fig:bypass-network}
+\end{figure}
+
+The pipeline overview shows this Bypass path between the Register Read and Execution
+stages.
+
+Although the forwarding logic spans multiple execution modules, the Register Read stage is
+designed to receive these forwarded values whenever available.
+
+\section{Dependency Resolution}
+
+Even after register renaming, true data dependencies (Read After Write) must still be respected.
+
+The Register Read stage ensures that:
+\begin{itemize}
+  \item Ready operands are immediately read from the register file.
+  \item Forwarded operands are used whenever newer values exist.
+  \item Instructions with unresolved dependencies wait until their operands become available.
+\end{itemize}
+
+Once all operands are available, the instruction advances to the Execution stage, where
+arithmetic, logical, memory, floating-point, SIMD, or branch operations are performed.
+
+The interaction between Register Read and Execution is coordinated through:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/datapath.sv}
+\end{center}
+
+and the execution subsystem rooted at:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/exe\_stage/rtl/exe\_stage.sv}
+\end{center}
+
+This completes the front-end portion of the Sargantana datapath before execution begins.

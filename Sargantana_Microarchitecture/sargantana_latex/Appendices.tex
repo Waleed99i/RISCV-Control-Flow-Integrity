@@ -1,0 +1,201 @@
+\chapter{CRUX of RTL Files and Status}
+
+\begingroup
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{@{}p{0.22\textwidth}p{0.5\textwidth}p{0.22\textwidth}@{}}
+\toprule
+\textbf{Chapter} & \textbf{RTL Modules / Files} & \textbf{Status} \\
+\midrule
+\endhead
+
+Chapter 9. Execution Stage &
+\rtl{exe\_stage.sv}, \rtl{alu.sv}, \rtl{alu\_add.sv}, \rtl{alu\_logic.sv}, \rtl{alu\_shift.sv}, \rtl{alu\_cmp.sv}, \rtl{branch\_unit.sv}, \rtl{mul\_unit.sv}, \rtl{div\_unit.sv}, \rtl{mem\_unit.sv}, \rtl{vagu.sv}, \rtl{load\_store\_queue.sv}, \rtl{store\_buffer.sv}, \rtl{score\_board\_scalar.sv}, \rtl{score\_board\_simd.sv}, \rtl{pending\_mem\_req\_queue.sv}, \rtl{pending\_fp\_ops\_queue.sv}
+& \ding{51}\ Fully supported \\
+\addlinespace
+
+Chapter 10. Memory Subsystem &
+\rtl{mem\_unit.sv}, \rtl{vagu.sv}, \rtl{load\_store\_queue.sv}, \rtl{store\_buffer.sv}, \rtl{pending\_mem\_req\_queue.sv}
+& \ding{51}\ Mostly supported \\
+\addlinespace
+
+Chapter 11. Writeback Stage &
+\rtl{wb\_stage/rtl/graduation\_list.sv}, completion signals coming from execution units
+& $\triangle$ Partially supported \\
+\addlinespace
+
+Chapter 12. Commit Stage &
+\rtl{wb\_stage/rtl/graduation\_list.sv}, \rtl{ir\_stage/rtl/rename\_table.sv}, \rtl{free\_list.sv}, scoreboard modules
+& $\triangle$ Commit logic exists but there is no standalone ROB module \\
+\addlinespace
+
+Chapter 13. Recovery Mechanisms &
+\rtl{branch\_unit.sv}, \rtl{branch\_predictor.sv}, \rtl{return\_address\_stack.sv}, \rtl{control\_unit.sv}, rename/free-list recovery logic
+& $\triangle$ Supported through distributed logic rather than one recovery module \\
+
+\bottomrule
+\end{longtable}
+\endgroup
+
+\vspace{1cm}
+
+\noindent\textbf{Legend:}
+\begin{itemize}[leftmargin=*]
+  \item[\ding{51}] Complete RTL coverage located and matched to the documentation.
+  \item[$\triangle$] Functionality exists but is distributed across several modules rather than a single dedicated file.
+\end{itemize}
+
+% ============================================================
+\chapter{Abbreviations and Acronyms}
+
+\begingroup
+\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{@{}p{0.15\textwidth}p{0.27\textwidth}p{0.50\textwidth}@{}}
+\toprule
+\textbf{Abbr.} & \textbf{Full Form} & \textbf{Description} \\
+\midrule
+\endhead
+ALU & Arithmetic Logic Unit & Executes integer arithmetic and logical operations. \\
+AGU & Address Generation Unit & Computes effective addresses for memory instructions. \\
+BTB & Branch Target Buffer & Stores predicted branch target addresses. \\
+BHT & Branch History Table & Stores branch prediction history. \\
+CSR & Control and Status Register & Special-purpose processor registers used for control and exception handling. \\
+CFI & Control-Flow Integrity & Security mechanism preventing illegal control-flow transfers. \\
+CPI & Cycles Per Instruction & Average execution cycles required per instruction. \\
+EX & Execute Stage & Pipeline stage where arithmetic, logical, and branch operations are executed. \\
+FP & Floating Point & Arithmetic performed on floating-point numbers. \\
+FPU & Floating Point Unit & Dedicated execution unit for floating-point instructions. \\
+FSM & Finite State Machine & Hardware state machine controlling logic behavior. \\
+GHR & Global History Register & Stores global branch history for branch prediction. \\
+IF & Instruction Fetch & Pipeline stage responsible for fetching instructions. \\
+ID & Instruction Decode & Pipeline stage where instructions are decoded. \\
+IQ & Instruction Queue & Buffer storing renamed instructions awaiting execution. \\
+IR & Instruction Rename & Pipeline stage performing register renaming. \\
+ISA & Instruction Set Architecture & Software-visible processor architecture. \\
+LSQ & Load Store Queue & Tracks pending memory operations while preserving memory ordering. \\
+LPAD & Landing Pad Instruction & Zicfilp instruction used to validate indirect branch targets. \\
+MEM & Memory Stage & Pipeline stage responsible for memory accesses. \\
+OoO & Out-of-Order & Execution model allowing instructions to execute before older instructions when dependencies permit. \\
+PC & Program Counter & Address of the current instruction. \\
+PE & Processing Element & Basic computational element, typically used in vector or matrix accelerators. \\
+RAT & Register Alias Table & Maps architectural registers to physical registers during renaming. \\
+ROB & Reorder Buffer & Tracks in-flight instructions and commits them in program order. \\
+RR & Register Read & Pipeline stage where source operands are read. \\
+RTL & Register Transfer Level & Hardware description abstraction used in Verilog/SystemVerilog. \\
+RAS & Return Address Stack & Hardware stack predicting return instruction targets. \\
+SIMD & Single Instruction Multiple Data & Parallel execution model processing multiple data elements simultaneously. \\
+SQ & Store Queue & Queue buffering store operations before retirement. \\
+SS & Shadow Stack & Protected stack used by Zicfiss to validate return addresses. \\
+SV & SystemVerilog & Hardware Description Language used for RTL implementation. \\
+TB & Testbench & Verification environment for RTL simulation. \\
+WB & Writeback & Pipeline stage where execution results are written back. \\
+XLEN & Integer Register Width & Width of the architectural integer registers (e.g., 32-bit or 64-bit). \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+% ============================================================
+\chapter{Pipeline Stage Abbreviations}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Stage} & \textbf{Meaning} \\
+\midrule
+IF1 & Instruction Fetch Stage 1 \\
+IF2 & Instruction Fetch Stage 2 \\
+ID & Instruction Decode \\
+IR & Instruction Rename \\
+RR & Register Read \\
+EX & Execute \\
+MEM & Memory Access \\
+WB & Writeback \\
+Commit & Instruction Retirement / Graduation \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ============================================================
+\chapter{RTL Module Abbreviations}
+
+\begingroup
+\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{@{}p{0.35\textwidth}p{0.55\textwidth}@{}}
+\toprule
+\textbf{Module} & \textbf{Description} \\
+\midrule
+\endhead
+\rtl{datapath.sv} & Top-level datapath implementation \\
+\rtl{control\_unit.sv} & Processor control logic \\
+\rtl{if\_stage\_1.sv} & First instruction fetch stage \\
+\rtl{if\_stage\_2.sv} & Second instruction fetch stage \\
+\rtl{decoder.sv} & Instruction decoder \\
+\rtl{immediate.sv} & Immediate value generator \\
+\rtl{rename\_table.sv} & Register alias table \\
+\rtl{free\_list.sv} & Physical register allocator \\
+\rtl{instruction\_queue.sv} & Issue queue \\
+\rtl{regfile.sv} & Physical register file \\
+\rtl{exe\_stage.sv} & Top-level execution stage \\
+\rtl{branch\_unit.sv} & Branch execution logic \\
+\rtl{alu.sv} & Arithmetic Logic Unit \\
+\rtl{div\_unit.sv} & Integer divider \\
+\rtl{mul\_unit.sv} & Integer multiplier \\
+\rtl{mem\_unit.sv} & Memory execution unit \\
+\rtl{load\_store\_queue.sv} & Load/Store Queue \\
+\rtl{pending\_mem\_req\_queue.sv} & Pending memory request tracker \\
+\rtl{pending\_fp\_ops\_queue.sv} & Pending floating-point operations \\
+\rtl{score\_board\_scalar.sv} & Scalar dependency scoreboard \\
+\rtl{score\_board\_simd.sv} & SIMD dependency scoreboard \\
+\rtl{graduation\_list.sv} & Instruction commit list \\
+\rtl{csr\_interface.sv} & CSR interface logic \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+% ============================================================
+\chapter{RISC-V Extensions Referenced}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Extension} & \textbf{Description} \\
+\midrule
+RV64 & 64-bit RISC-V base ISA \\
+M & Integer Multiply/Divide Extension \\
+A & Atomic Extension \\
+F & Single-Precision Floating Point \\
+D & Double-Precision Floating Point \\
+C & Compressed Instructions \\
+V & Vector Extension \\
+Zfa & Additional Floating-Point Instructions \\
+Zfh & Half-Precision Floating Point \\
+Zvfhmin & Minimal Half-Precision Vector Extension \\
+Zicfilp & Control-Flow Integrity Landing Pad Extension \\
+Zicfiss & Control-Flow Integrity Shadow Stack Extension \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ============================================================
+\chapter{Execution Unit Components}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Component} & \textbf{Function} \\
+\midrule
+ALU & Integer arithmetic and logic \\
+Branch Unit & Branch comparison and target computation \\
+Divider & Integer division operations \\
+Multiplier & Integer multiplication operations \\
+Memory Unit & Load and store execution \\
+SIMD Unit & Vector arithmetic execution \\
+FPU & Floating-point execution \\
+AGU & Effective address generation \\
+Scoreboard & Dependency tracking \\
+Pending Queues & Track unfinished operations \\
+\bottomrule
+\end{tabular}
+\end{center}

@@ -1,0 +1,147 @@
+\documentclass[11pt,oneside]{book}
+
+% ---------- Packages ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{amssymb}
+\usepackage{caption}
+\usepackage{pifont} % for \ding checkmark symbols
+
+% ---------- Colors ----------
+% Per author request: the document body (titles, headings, links) is black.
+% Only RTL/.sv file paths get a distinguishing style so they still stand out
+% as "code", but without using a loud color like blue/green.
+\definecolor{rtlgray}{gray}{0.35}      % dark gray "code" tone for RTL paths (reads as near-black)
+
+% ---------- Custom command for RTL file paths ----------
+% Distinguishes RTL paths as "code" via italic monospace in a muted dark-gray
+% tone, instead of a colored highlight box. A background \colorbox cannot
+% break across lines, which overflowed long paths inside table cells, so
+% plain (unboxed) styled text is used here -- it wraps normally via \url,
+% which breaks properly at "/" and "_". soul.sty is not available in this build.
+\urlstyle{tt}
+\newcommand{\rtl}[1]{\textit{\textcolor{rtlgray}{\url{#1}}}}
+
+% A block for a list of RTL references (also highlighted, boxed)
+\newenvironment{rtlrefs}{%
+  \begin{quote}
+  \noindent\textbf{RTL References}\par
+  \vspace{2pt}
+  \begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
+}{%
+  \end{itemize}
+  \end{quote}
+}
+\newcommand{\rtlitem}[1]{\item \rtl{#1}}
+
+% ---------- Section numbering depth ----------
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+% ---------- Headers/Footers ----------
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ---------- Chapter/Section title styling ----------
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+% ---------- Graphics path ----------
+\graphicspath{{figures/}}
+
+% ---------- Hyperref setup ----------
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=black,
+  citecolor=black,
+  pdftitle={Understanding the Sargantana Microarchitecture},
+  pdfauthor={Muhammad Waleed Akram}
+}
+
+\title{Understanding the Sargantana Microarchitecture}
+\author{Muhammad Waleed Akram}
+\date{}
+
+\begin{document}
+
+% ================= TITLE PAGE =================
+\begin{titlepage}
+\centering
+\vspace*{1.5cm}
+
+{\Huge\bfseries Understanding the\\[4pt] Sargantana Microarchitecture\par}
+\vspace{0.6cm}
+{\Large An RTL-Oriented Study of the Sargantana RISC-V Processor\par}
+
+\vspace{2cm}
+
+\begin{minipage}{0.42\textwidth}
+  \centering
+  \includegraphics[width=0.55\textwidth]{sargantana_logo.png}
+\end{minipage}%
+\begin{minipage}{0.42\textwidth}
+  \centering
+  \includegraphics[width=0.5\textwidth]{riscv_logo.png}
+\end{minipage}
+
+\vspace{2cm}
+
+{\Large\bfseries Author\par}
+{\Large Muhammad Waleed Akram\par}
+
+\vspace{1.5cm}
+
+{\large Repository: \url{https://github.com/bsc-loca/sargantana}\par}
+
+\vfill
+
+{\large \today\par}
+
+\end{titlepage}
+
+\frontmatter
+\tableofcontents
+
+\mainmatter
+
+\input{Chapter01.tex}
+\input{Chapter02.tex}
+\input{Chapter03.tex}
+\input{Chapter04.tex}
+\input{Chapter05.tex}
+\input{Chapter06.tex}
+\input{Chapter07.tex}
+\input{Chapter08.tex}
+\input{Chapter09.tex}
+\input{Chapter10.tex}
+\input{Chapter11.tex}
+\input{Chapter12.tex}
+\input{Chapter13.tex}
+
+\appendix
+\input{Appendices.tex}
+
+\end{document}

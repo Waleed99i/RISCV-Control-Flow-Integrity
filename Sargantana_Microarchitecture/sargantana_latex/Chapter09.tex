@@ -1,0 +1,183 @@
+\chapter{Execution Stage}
+
+\section{Overview}
+
+The Execution (EXE) stage is responsible for performing the actual computation requested by
+each instruction. After operands have been read from the physical register file, instructions are
+dispatched to the appropriate execution unit based on their operation type.
+
+Unlike a simple in-order processor that contains a single ALU, Sargantana contains multiple
+specialized execution units capable of executing integer, branch, multiplication, division,
+floating-point, SIMD and memory operations simultaneously.
+
+The entire execution subsystem is implemented under:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/exe\_stage/}
+\end{center}
+
+The top-level execution module is:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/exe\_stage/rtl/exe\_stage.sv}
+\end{center}
+
+This module acts as the dispatcher for all execution units and interfaces with the Load/Store
+subsystem, scoreboards, writeback logic and pipeline control.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.55\textwidth]{ch09_execution_overview.png}
+  \caption{Execution stage overview: RR-to-EXE dispatch to Mem, ALU, Mul/Div, SIMD, FPU, and BrU}
+  \label{fig:execution-overview}
+\end{figure}
+
+\section{Arithmetic Logic Unit (ALU)}
+
+The Arithmetic Logic Unit performs all integer arithmetic and logical operations. Instead of
+implementing every operation inside one large module, Sargantana divides the ALU into several
+dedicated functional blocks.
+
+The top-level ALU is implemented in:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/exe\_stage/rtl/alu/alu.sv}
+\end{center}
+
+Internally, the ALU is divided into the following modules:
+
+\begin{longtable}{@{}p{0.45\textwidth}p{0.5\textwidth}@{}}
+\toprule
+\textbf{RTL File} & \textbf{Function} \\
+\midrule
+\endhead
+\rtl{alu\_add.sv} & Addition and subtraction \\
+\rtl{alu\_logic.sv} & AND, OR, XOR operations \\
+\rtl{alu\_shift.sv} & Logical and arithmetic shifts \\
+\rtl{alu\_cmp.sv} & Comparison instructions (SLT, SLTU, etc.) \\
+\rtl{alu\_count\_pop.sv} & Population count instructions \\
+\rtl{zero\_counter/alu\_count\_zeros.sv} & Leading/trailing zero count operations \\
+\bottomrule
+\end{longtable}
+
+This modular implementation simplifies verification while allowing new ALU extensions to be
+integrated independently.
+
+\section{Branch Unit}
+
+Branch instructions require a different execution path than arithmetic instructions because they
+determine the next program counter value.
+
+The Branch Unit performs:
+\begin{itemize}
+  \item Conditional branch evaluation
+  \item Branch target calculation
+  \item Branch taken/not-taken decision
+  \item Branch misprediction recovery support
+\end{itemize}
+
+RTL implementation:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/exe\_stage/rtl/branch\_unit.sv}
+\end{center}
+
+Although branch prediction occurs during the fetch stage, the Branch Unit provides the final
+verification of branch outcomes during execution. Any prediction mismatch is reported back to
+the pipeline so that incorrect speculative instructions can be flushed.
+
+\section{Multiplier Unit}
+
+Integer multiplication operations are handled by a dedicated multiplier unit.
+
+RTL implementation:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/exe\_stage/rtl/mul\_unit.sv}
+\end{center}
+
+Separating multiplication from the ALU allows multiplication instructions to execute
+independently without increasing the critical path of simple arithmetic operations.
+
+The multiplier supports RISC-V integer multiplication instructions while integrating with the
+pipeline's scoreboard and scheduling logic.
+
+\section{Divider Unit}
+
+Division operations typically require multiple clock cycles and therefore utilize a dedicated
+hardware divider.
+
+The Divider subsystem consists of:
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/div_unit.sv}
+  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/div_4bits.sv}
+\end{rtlrefs}
+
+The divider performs integer division and remainder calculations while allowing the processor to
+continue issuing independent instructions. The scoreboard tracks outstanding division
+operations until completion.
+
+\section{Memory Unit}
+
+Load and store instructions are processed by the Memory Unit, which interfaces directly with the
+Load/Store Queue and the cache subsystem.
+
+Primary RTL modules include:
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/mem_unit.sv}
+  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/load_store_queue.sv}
+  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/store_buffer.sv}
+  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/vagu.sv}
+\end{rtlrefs}
+
+The responsibilities of these modules include:
+\begin{itemize}
+  \item Effective address calculation
+  \item Load request generation
+  \item Store buffering
+  \item Memory dependency handling
+  \item Interface with the memory hierarchy
+\end{itemize}
+
+The dedicated Address Generation Unit (\rtl{vagu.sv}) computes effective memory addresses
+before memory accesses are issued.
+
+\section{Execution Pipeline Flow}
+
+Once an instruction reaches the Execution stage, it is dispatched to the appropriate functional
+unit according to its opcode.
+
+The execution flow can be summarized as shown in Figure~\ref{fig:execution-flow}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{ch09_execution_pipeline_flow.png}
+  \caption{Execution pipeline flow: dispatch through \texttt{exe\_stage.sv} to the functional units and result generation}
+  \label{fig:execution-flow}
+\end{figure}
+
+The execution stage also integrates several auxiliary modules that coordinate long-latency
+operations:
+
+\begin{rtlrefs}
+  \rtlitem{pending_mem_req_queue.sv}
+  \rtlitem{pending_fp_ops_queue.sv}
+  \rtlitem{score_board_scalar.sv}
+  \rtlitem{score_board_simd.sv}
+\end{rtlrefs}
+
+These modules allow Sargantana to support out-of-order execution while maintaining correct
+instruction dependencies.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.55\textwidth]{ch09_execution_detail.png}
+  \caption{Detailed execution-stage datapath, including the D-cache interface and auxiliary queues}
+  \label{fig:execution-detail}
+\end{figure}
+
+\begin{quote}
+\textit{Note: it was refined later on, I guess, because the current pipeline is a bit more advanced!}
+\end{quote}

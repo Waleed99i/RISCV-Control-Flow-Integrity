@@ -1,0 +1,135 @@
+\chapter{Writeback Stage}
+
+\section{Overview}
+
+The Writeback (WB) stage is responsible for collecting the completed results produced by the
+execution units and making them available for architectural retirement. Unlike an in-order
+processor where results are written directly into the register file, Sargantana employs an
+out-of-order backend. Consequently, completed execution results are first gathered and
+associated with their corresponding physical registers before the instruction becomes eligible for
+retirement.
+
+The writeback stage therefore acts as the interface between execution and commit. It receives
+completion notifications from multiple functional units such as the ALU, multiplier, divider,
+floating-point unit, SIMD unit, and memory subsystem. Once a result is available, the stage
+updates the internal completion status so that dependent instructions may proceed and the
+commit stage can eventually retire the instruction.
+
+Unlike the execution stage, the writeback logic mainly manages completed instruction
+information rather than performing arithmetic computations.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}
+  \rtlitem{rtl/datapath/rtl/datapath.sv}
+\end{rtlrefs}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{ch11_writeback_overview.png}
+  \caption{Writeback stage in context: results flow from the execution units into the Graduation List and Commit}
+  \label{fig:writeback-overview}
+\end{figure}
+
+\section{Result Collection}
+
+Multiple execution units operate simultaneously and may finish execution at different clock
+cycles. The writeback stage therefore collects completed results from all available execution
+pipelines.
+
+Typical producers include:
+\begin{itemize}
+  \item Integer ALU
+  \item Branch Unit
+  \item Multiplier
+  \item Divider
+  \item Memory Unit
+  \item Floating Point Unit
+  \item SIMD Unit
+\end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{ch11_result_collection.png}
+  \caption{Result collection: completed results from the highlighted execution units feed the writeback stage}
+  \label{fig:result-collection}
+\end{figure}
+
+Each completed instruction provides:
+\begin{itemize}
+  \item Destination physical register
+  \item Computed result
+  \item Completion indication
+  \item Exception information (if generated)
+\end{itemize}
+
+Rather than immediately committing the instruction, the writeback stage records that the
+instruction has completed successfully.
+
+The RTL implements this functionality through the \textbf{Graduation List}, which keeps track of
+instructions that have completed execution and are waiting for architectural retirement.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}
+\end{rtlrefs}
+
+\section{Register Update}
+
+Because Sargantana uses physical register renaming, execution results are written into the
+allocated physical register instead of directly updating the architectural register file.
+
+The sequence is:
+\begin{enumerate}
+  \item Register Rename allocates a physical register.
+  \item Execution computes the instruction result.
+  \item Writeback stores the value into the physical register.
+  \item Commit later updates the architectural mapping.
+\end{enumerate}
+
+This separation allows speculative instructions to execute safely without modifying the visible
+architectural state.
+
+The Graduation List maintains the completion status for each instruction until the Commit stage
+verifies that the instruction can safely retire.
+
+This mechanism supports:
+\begin{itemize}
+  \item speculative execution
+  \item precise exceptions
+  \item rollback after branch misprediction
+  \item correct in-order retirement
+\end{itemize}
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/rename_table.sv}
+  \rtlitem{rtl/datapath/rtl/rr_stage/rtl/regfile.sv}
+  \rtlitem{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}
+\end{rtlrefs}
+
+\section{Exception Information}
+
+Besides carrying execution results, the writeback stage also forwards exception information
+generated during execution.
+
+Examples include:
+\begin{itemize}
+  \item Illegal instruction
+  \item Load or Store access fault
+  \item Misaligned memory access
+  \item Arithmetic exceptions
+  \item Floating-point exceptions
+\end{itemize}
+
+Instead of immediately servicing an exception, the writeback stage records the exception status
+alongside the completed instruction.
+
+The Commit stage later checks whether the faulting instruction is the oldest instruction in the
+machine. Only then is the architectural state updated and the exception is delivered,
+guaranteeing precise exception handling.
+
+This approach ensures that younger speculative instructions never modify architectural state
+before older instructions have safely completed.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}
+  \rtlitem{rtl/control_unit/rtl/control_unit.sv}
+\end{rtlrefs}

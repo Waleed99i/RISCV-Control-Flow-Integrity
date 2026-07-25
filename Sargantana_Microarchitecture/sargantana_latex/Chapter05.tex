@@ -1,0 +1,190 @@
+\chapter{Branch Prediction Subsystem}
+
+\section{Overview}
+
+One of the biggest performance bottlenecks in modern processors is the presence of branch
+instructions. Every conditional branch introduces uncertainty because the processor does not
+immediately know which instruction should be fetched next. Waiting until the branch is resolved
+would stall the pipeline and significantly reduce performance.
+
+To avoid these stalls, Sargantana performs \textbf{speculative execution} by predicting the outcome of
+branches before they are executed. If the prediction is correct, instruction execution continues
+without interruption. If the prediction is incorrect, speculative instructions are discarded and the
+processor restarts from the correct target address.
+
+Unlike a simple five-stage processor, Sargantana performs branch prediction during the
+\textbf{Fetch-1 (F1)} stage so that the following stages remain continuously supplied with instructions.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/rtl/if_stage_1.sv}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/rtl/branch_predictor.sv}
+\end{rtlrefs}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.75\textwidth]{ch05_btb_bht.png}
+  \caption{Program Counter fields feeding the TAG, FSM, and TARGET structures of the branch predictor}
+  \label{fig:btb-bht}
+\end{figure}
+
+\section{Speculative Execution}
+
+Speculative execution allows instructions located after a predicted branch to begin moving
+through the pipeline before the branch outcome is known.
+
+The branch predictor selects one of two possible next PCs:
+\begin{itemize}
+  \item Sequential PC (PC + 4)
+  \item Predicted branch target
+\end{itemize}
+
+The Fetch stage immediately begins fetching instructions from the selected address.
+If the prediction later proves correct, execution continues normally.
+If incorrect, the processor:
+\begin{itemize}
+  \item flushes incorrect pipeline entries,
+  \item restores architectural state,
+  \item redirects the PC to the correct target.
+\end{itemize}
+
+This recovery mechanism minimizes branch penalties while maintaining correctness.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/rtl/if_stage_1.sv}
+  \rtlitem{rtl/control_unit/rtl/control_unit.sv}
+\end{rtlrefs}
+
+\section{Branch Target Buffer (BTB)}
+
+The Branch Target Buffer stores previously encountered branch instructions together with their
+destination addresses.
+
+Whenever a new PC enters Fetch-1, the BTB is searched.
+If a matching entry exists, the BTB immediately supplies the predicted destination address
+instead of waiting for the branch instruction to execute.
+
+Therefore, BTB answers the question:
+
+\begin{quote}
+\textit{``Where should execution go?''}
+\end{quote}
+
+Its primary purpose is reducing control hazards caused by indirect and conditional branches.
+Within Sargantana, BTB functionality is managed by the branch prediction subsystem inside the
+Fetch-1 stage.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/rtl/branch_predictor.sv}
+\end{rtlrefs}
+
+\section{Branch History Table (BHT)}
+
+Predicting only the target address is insufficient because the processor must also determine
+whether the branch will actually be taken.
+
+The Branch History Table records the recent behavior of each branch instruction.
+Instead of storing target addresses, it stores prediction information indicating whether the
+branch is likely to be:
+\begin{itemize}
+  \item Taken
+  \item Not Taken
+\end{itemize}
+
+Sargantana implements this functionality through the Bimodal Predictor, which uses saturating
+prediction counters that are continuously updated using previous execution history.
+
+The BHT therefore answers:
+
+\begin{quote}
+\textit{``Will this branch be taken?''}
+\end{quote}
+
+Together, the BTB and BHT determine both the destination and the likelihood of branching.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/rtl/bimodal_predictor.sv}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/rtl/branch_predictor.sv}
+\end{rtlrefs}
+
+\section{Return Address Stack (RAS)}
+
+Function calls and returns occur very frequently in software.
+Predicting return instructions using only the BTB is often inaccurate because a single function
+may be called from many different locations.
+
+To improve prediction accuracy, Sargantana implements a Return Address Stack (RAS).
+
+Operation:
+\begin{itemize}
+  \item CALL instruction $\rightarrow$ push return address.
+  \item RETURN instruction $\rightarrow$ pop return address.
+  \item popped address becomes predicted next PC.
+\end{itemize}
+
+This significantly improves prediction accuracy for nested function calls.
+
+The Return Address Stack is implemented as an independent hardware structure inside the
+Fetch stage.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/rtl/return_address_stack.sv}
+\end{rtlrefs}
+
+\section{Prediction Flow}
+
+The overall prediction process performed during instruction fetch is summarized below.
+
+\begin{enumerate}
+  \item Current Program Counter enters Fetch-1.
+  \item Branch Predictor receives the PC.
+  \item BTB checks whether the PC corresponds to a known branch.
+  \item BHT predicts whether the branch will be taken.
+  \item RAS provides return addresses for function returns when required.
+  \item Predictor selects the next PC.
+  \item Fetch-2 retrieves instructions from the predicted address.
+  \item Later execution stages verify the correctness of the prediction.
+  \item If incorrect, Recovery Logic flushes the pipeline and redirects execution.
+\end{enumerate}
+
+This mechanism allows Sargantana to maintain a high instruction throughput while minimizing
+branch penalties.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/rtl/if_stage_1.sv}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/rtl/branch_predictor.sv}
+  \rtlitem{rtl/control_unit/rtl/control_unit.sv}
+\end{rtlrefs}
+
+\section{Recovery from Mispredictions}
+
+A branch prediction is considered complete only after the branch instruction executes.
+If the prediction matches the actual result, execution proceeds normally.
+Otherwise, the processor performs a recovery sequence:
+
+\begin{itemize}
+  \item Flush speculative instructions.
+  \item Restore the correct architectural state.
+  \item Update predictor history.
+  \item Redirect the Program Counter.
+  \item Resume instruction fetch.
+\end{itemize}
+
+The recovery logic works together with:
+\begin{itemize}
+  \item Instruction Queue
+  \item Rename Tables
+  \item Free Lists
+  \item Graduation List
+  \item Control Unit
+\end{itemize}
+
+to ensure that incorrectly executed speculative instructions never modify the committed
+architectural state.
+
+\begin{rtlrefs}
+  \rtlitem{rtl/control_unit/rtl/control_unit.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/instruction_queue.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/rename_table.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/free_list.sv}
+  \rtlitem{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}
+\end{rtlrefs}

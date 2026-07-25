@@ -1,0 +1,144 @@
+\chapter{Register Rename Stage}
+
+\section{Overview}
+
+After an instruction has been decoded, it enters the Register Rename (IR) stage. The primary
+objective of this stage is to eliminate false dependencies caused by reuse of architectural
+register names.
+
+In the Sargantana processor, the rename stage consists of three major components:
+\begin{itemize}
+  \item Register Alias Table (Rename Table)
+  \item Free List
+  \item Instruction Queue
+\end{itemize}
+
+These modules are implemented in:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/ir\_stage/}
+\end{center}
+
+Important RTL files include:
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/rename_table.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/free_list.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rtl/instruction_queue.sv}
+\end{rtlrefs}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.45\textwidth]{ch07_rename_overview.png}
+  \caption{Rename stage: Instruction Queue, Renaming Tables, Free Lists, and Recovery Logic}
+  \label{fig:rename-overview}
+\end{figure}
+
+\section{Register Renaming}
+
+Modern superscalar processors allow multiple instructions to execute simultaneously. If two
+instructions write to the same architectural register, false dependencies arise even when the
+instructions are logically independent.
+
+Register renaming solves this problem by mapping architectural registers onto a much larger
+pool of physical registers.
+
+For example:
+\begin{verbatim}
+ADD x5, x1, x2
+SUB x5, x3, x4
+\end{verbatim}
+
+Architecturally, both instructions write to \texttt{x5}.
+
+\textbf{Without renaming:}
+\begin{verbatim}
+ADD -----> x5
+SUB -----> x5
+\end{verbatim}
+The second instruction must wait.
+
+\textbf{With renaming:}
+\begin{verbatim}
+ADD -----> P17
+SUB -----> P22
+\end{verbatim}
+Both instructions can execute independently.
+
+This mapping is maintained inside:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/ir\_stage/rtl/rename\_table.sv}
+\end{center}
+
+\section{Register Alias Table (RAT)}
+
+The Register Alias Table (RAT), implemented as the Rename Table, stores the current mapping
+between architectural registers and physical registers.
+
+Rather than reading an architectural register directly, later stages first consult the Rename Table
+to determine which physical register currently holds the latest value.
+
+Whenever a new destination register is renamed, the table updates its mapping.
+
+The implementation resides in:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/ir\_stage/rtl/rename\_table.sv}
+\end{center}
+
+The Rename Table therefore becomes the central structure responsible for maintaining correct
+register mappings throughout speculative execution.
+
+\section{Physical Register Allocation}
+
+Each new destination register requires a free physical register.
+
+Instead of searching all registers every cycle, Sargantana maintains a dedicated Free List.
+
+The Free List keeps track of unused physical registers.
+
+Whenever an instruction requires a destination register, the allocation proceeds as shown below.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.55\textwidth]{ch07_physical_register_allocation.png}
+  \caption{Physical register allocation flow: Instruction arrives $\rightarrow$ Request Physical Register $\rightarrow$ Free List selects register $\rightarrow$ Rename Table updated}
+  \label{fig:phys-reg-alloc}
+\end{figure}
+
+When an instruction finally commits, its old physical register is returned to the Free List for
+reuse.
+
+This functionality is implemented in:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/ir\_stage/rtl/free\_list.sv}
+\end{center}
+
+Together, the Free List and Rename Table enable efficient dynamic register allocation.
+
+\section{Hazard Elimination}
+
+The rename stage primarily eliminates false dependencies:
+\begin{itemize}
+  \item Write After Write (WAW)
+  \item Write After Read (WAR)
+\end{itemize}
+
+Because each destination register receives a unique physical register, later instructions no
+longer overwrite the results of earlier instructions.
+
+Only true data dependencies (RAW) remain.
+
+The renamed instructions are temporarily stored inside the Instruction Queue before being
+issued to the Register Read stage.
+
+Instruction Queue implementation:
+
+\begin{center}
+\rtl{rtl/datapath/rtl/ir\_stage/rtl/instruction\_queue.sv}
+\end{center}
+
+The rename stage therefore prepares instructions for high-performance out-of-order execution
+while maintaining correct architectural state.

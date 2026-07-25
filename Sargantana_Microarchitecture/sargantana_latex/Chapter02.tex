@@ -1,0 +1,113 @@
+\chapter{Sargantana Pipeline Overview}
+
+\section{Pipeline Architecture}
+
+The processor uses register renaming, speculative execution, branch prediction, instruction
+queues, multiple execution units, and an in-order commit mechanism. These features allow
+instructions to execute out of program order while preserving the correct architectural state at
+retirement.
+
+The complete processor pipeline is illustrated in Figure~\ref{fig:pipeline-overview}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{ch02_pipeline_overview.png}
+  \caption{Sargantana complete processor pipeline}
+  \label{fig:pipeline-overview}
+\end{figure}
+
+The major stages of the pipeline are:
+
+\begin{itemize}
+  \item Fetch 1
+  \item Fetch 2
+  \item Decode
+  \item Rename
+  \item Register Read
+  \item Execution
+  \item Write Back
+  \item Commit
+\end{itemize}
+
+Each stage performs a specific task and communicates with adjacent stages through dedicated
+pipeline registers.
+
+\section{Pipeline Stages}
+
+The Sargantana pipeline consists of eight primary stages, each responsible for a particular
+phase of instruction execution.
+
+\subsection*{Fetch 1}
+The Fetch 1 stage maintains the Program Counter (PC) and communicates with the instruction
+cache to request instructions. Branch prediction hardware, including the Branch Target Buffer
+(BTB) and Branch History Table (BHT), is also consulted to predict future control flow before
+branch instructions are resolved.
+
+\subsection*{Fetch 2}
+The second fetch stage receives instructions from the instruction cache and forwards them to
+the decode stage through the F2-to-D pipeline register. During this stage, prediction information
+generated in Fetch 1 accompanies the fetched instructions.
+
+\subsection*{Decode}
+The decode stage interprets the binary instruction encoding and determines:
+\begin{itemize}
+  \item instruction type
+  \item source registers
+  \item destination register
+  \item immediate values
+  \item execution unit selection
+  \item control signals
+\end{itemize}
+The decoded instruction is then inserted into the instruction queue for subsequent processing.
+
+\subsection*{Rename}
+One of the defining characteristics of Sargantana is its register renaming stage. Architectural
+registers are mapped onto physical registers to eliminate false dependencies such as
+Write-After-Write (WAW) and Write-After-Read (WAR) hazards.
+
+This stage also interacts with:
+\begin{itemize}
+  \item Renaming Tables
+  \item Free Lists
+  \item Recovery Logic
+\end{itemize}
+to manage physical register allocation and pipeline recovery following branch mispredictions or
+exceptions.
+
+\subsection*{Register Read}
+After renaming, source operands are read from the physical register file. If the required
+operands have recently been produced but not yet written back, bypass logic forwards the
+values directly from later pipeline stages to reduce execution latency.
+
+\subsection*{Execution}
+Instructions are dispatched to specialized execution units depending on their operation.
+These include:
+\begin{itemize}
+  \item Arithmetic Logic Unit (ALU)
+  \item Branch Unit (BrU)
+  \item Load/Store Unit (Memory)
+  \item Multiply/Divide Unit
+  \item Floating Point Unit (FPU)
+  \item SIMD Unit
+\end{itemize}
+Each functional unit operates independently, allowing several instructions to execute
+concurrently.
+
+\subsection*{Write Back}
+Upon completion of execution, results are written back into the physical register file. These
+results become available for dependent instructions through both register reads and forwarding
+paths.
+
+\subsection*{Commit}
+Although instructions execute out-of-order, they retire strictly in program order. The commit
+stage updates the architectural state only after ensuring that all previous instructions have
+completed successfully. This guarantees precise exceptions and preserves program
+correctness.
+
+\section{Instruction Flow through the Pipeline}
+
+Figure~\ref{fig:pipeline-overview} illustrates how instructions travel through the processor pipeline.
+
+Unlike an in-order processor, instructions may execute as soon as their operands become
+available rather than waiting for older instructions to finish execution. However, all instructions
+commit in the original program order, ensuring correct architectural behavior.

@@ -281,6 +281,18 @@ As part of this project, I documented my learning journey while studying the RIS
 
 ---
 
+## Sargantana RTL Microarchitecture Study
+
+A comprehensive study of the **Sargantana** out-of-order RISC-V processor based on an extensive analysis of its RTL implementation. The documentation covers the processor pipeline, execution units, memory subsystem, branch prediction, register renaming, recovery mechanisms, and overall microarchitecture. Corresponding RTL file paths are highlighted throughout the document to bridge the architectural concepts with their SystemVerilog implementation.
+
+| Resource | Description |
+|----------|-------------|
+|  [Sargantana RTL Microarchitecture (PDF)](Sargantana_Microarchitecture/Sargantana_RTL_MicroArchitecture-Waleed.pdf) | Complete microarchitecture study in PDF format. |
+|  [LaTeX Generated PDF](Sargantana_Microarchitecture/Sargantana_RTL_Microarchitecture_Waleed-latex.pdf) | PDF generated directly from the LaTeX source. Though it has some of the figures at wrong places due to latex , but rest is all good |
+|  [LaTeX Source Files](Sargantana_Microarchitecture/sargantana_latex/) | Complete LaTeX source used to generate the documentation. |
+
+---
+
 # References / Learning Material
 
 ## CFI Specification

@@ -1,0 +1,107 @@
+\chapter{Top-Level Datapath}
+
+\section{Introduction}
+
+The datapath forms the computational backbone of the Sargantana processor. It interconnects
+every major pipeline stage, coordinates the movement of instructions and operands, and
+interfaces with all execution units. While the control logic determines \textit{what} operation must be
+performed, the datapath determines \textit{where} information flows and \textit{how} the processor state is
+updated.
+
+At the highest level, the datapath receives instructions from the instruction fetch subsystem,
+processes them through decoding, register renaming, operand reading, execution, and finally
+commits the architectural state once execution completes successfully.
+
+The complete organization of the datapath is illustrated in Figure~\ref{fig:datapath-overview}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{ch03_datapath_overview.png}
+  \caption{Top-level organization of the Sargantana datapath}
+  \label{fig:datapath-overview}
+\end{figure}
+
+\section{Top-Level Interfaces}
+
+The top-level datapath module serves as the central connection point between the frontend,
+backend, execution units, memory subsystem, and commit logic.
+
+Its primary interfaces include:
+
+\subsection*{Instruction Interface}
+Receives decoded instructions originating from the frontend pipeline.
+Connected modules include:
+\begin{itemize}
+  \item Decoder
+  \item Instruction Queue
+\end{itemize}
+
+\subsection*{Register Interface}
+Communicates with the physical register file to obtain source operands and write execution
+results.
+Connected modules include:
+\begin{itemize}
+  \item Register File
+  \item Rename Logic
+  \item Bypass Network
+\end{itemize}
+
+\subsection*{Execution Interface}
+Dispatches instructions to the appropriate execution unit based on the decoded operation.
+Supported execution units include:
+\begin{itemize}
+  \item ALU
+  \item Branch Unit
+  \item Load/Store Unit
+  \item Multiply/Divide Unit
+  \item SIMD Unit
+  \item Floating Point Unit
+\end{itemize}
+
+\subsection*{Commit Interface}
+Transfers completed instructions to the Graduation List and Commit stage where architectural
+state is updated.
+
+\subsection*{Recovery Interface}
+Provides rollback support whenever
+\begin{itemize}
+  \item branch prediction fails,
+  \item exceptions occur,
+  \item interrupts arrive.
+\end{itemize}
+Recovery information is exchanged with the Rename stage and Commit logic to restore a
+precise architectural state.
+
+\section{Internal Architecture}
+
+Internally, the datapath acts as the interconnection fabric of the processor.
+Instead of implementing computation directly, it instantiates and connects all major pipeline
+components.
+
+The internal architecture consists of:
+\begin{itemize}
+  \item Pipeline Registers
+  \item Instruction Queue
+  \item Rename Tables
+  \item Physical Register File
+  \item Bypass Network
+  \item Functional Units
+  \item Commit Logic
+\end{itemize}
+
+\section{Pipeline Registers}
+
+To achieve high throughput, Sargantana separates adjacent pipeline stages using dedicated
+pipeline registers.
+
+Important pipeline registers include:
+\begin{itemize}
+  \item F1-to-F2
+  \item F2-to-D
+  \item IR-to-RR
+  \item RR-to-EXE
+  \item EXE-to-WB
+\end{itemize}
+
+These registers isolate combinational logic between stages, allowing multiple instructions to
+progress simultaneously through different portions of the processor.

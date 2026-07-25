@@ -1,0 +1,88 @@
+\chapter{Recovery Mechanisms}
+
+\section{Overview}
+
+Recovery in DRAC ensures that the processor returns to a precise architectural state whenever
+speculative execution fails or an exception occurs. Since the processor executes instructions
+out-of-order, incorrect speculative instructions must be removed while preserving the committed
+architectural state.
+
+\section{Branch Misprediction Recovery}
+
+This section covers:
+\begin{itemize}
+  \item Branch prediction in IF Stage 1
+  \item Actual branch resolution in the Execution Stage (\rtl{branch\_unit.sv})
+  \item Detection of incorrect prediction
+  \item Redirecting the Program Counter
+  \item Flushing younger speculative instructions
+  \item Restoring rename mappings and scoreboard entries
+\end{itemize}
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/branch_predictor.sv}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/bimodal_predictor.sv}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/return_address_stack.sv}
+  \rtlitem{rtl/datapath/rtl/exe_stage/branch_unit.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/rename_table.sv}
+  \rtlitem{rtl/datapath/rtl/ir_stage/free_list.sv}
+  \rtlitem{rtl/datapath/rtl/exe_stage/score_board_scalar.sv}
+  \rtlitem{rtl/datapath/rtl/exe_stage/score_board_simd.sv}
+  \rtlitem{rtl/control_unit/rtl/control_unit.sv}
+\end{rtlrefs}
+
+\section{Exception Recovery}
+
+This section covers:
+\begin{itemize}
+  \item Arithmetic exceptions
+  \item Illegal instructions
+  \item Memory exceptions
+  \item CSR exceptions
+  \item Exception propagation
+  \item Precise exception model
+\end{itemize}
+
+\begin{rtlrefs}
+  \rtlitem{rtl/csr/}
+  \rtlitem{rtl/datapath/rtl/interface_csr/csr_interface.sv}
+  \rtlitem{rtl/control_unit/}
+\end{rtlrefs}
+
+\section{Pipeline Flush Mechanism}
+
+This section covers:
+\begin{itemize}
+  \item Flush signal generation
+  \item Invalidating pipeline entries
+  \item Clearing issue queues
+  \item Clearing scoreboards
+  \item Clearing pending memory requests
+  \item Cancelling speculative instructions
+\end{itemize}
+
+\begin{rtlrefs}
+  \rtlitem{rtl/control_unit/}
+  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/pending_mem_req_queue.sv}
+  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/pending_fp_ops_queue.sv}
+  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/pending_vfp_ops_queue.sv}
+  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/load_store_queue.sv}
+  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/score_board_scalar.sv}
+  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/score_board_simd.sv}
+\end{rtlrefs}
+
+\section{Restarting Instruction Execution}
+
+This section covers:
+\begin{itemize}
+  \item Redirect PC
+  \item Restore rename state
+  \item Resume fetch
+  \item Continue normal execution
+\end{itemize}
+
+\begin{rtlrefs}
+  \rtlitem{rtl/datapath/rtl/if_stage_1/}
+  \rtlitem{rtl/datapath/rtl/ir_stage/}
+  \rtlitem{rtl/control_unit/}
+\end{rtlrefs}
