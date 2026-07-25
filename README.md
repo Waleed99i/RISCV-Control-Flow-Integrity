@@ -268,6 +268,19 @@ POSSIBLE extensions may include:
 
 ---
 
+## Technical Blog Series
+
+As part of this project, I documented my learning journey while studying the RISC-V Control-Flow Integrity (CFI) ISA extensions and their relationship to the LFX coding challenge. Each blog is also available in Markdown format within this repository.
+
+| Blog | Markdown File | Title / Description |
+|------|---------------|---------------------|
+| **[Blog 1 – Understanding the RISC-V Control-Flow Integrity (CFI) ISA (Part 1): Landing Pads (Zicfilp)](https://randomchecking.hashnode.dev/understanding-the-risc-v-control-flow-integrity-cfi-isa-part-1-landing-pads-zicfilp)** | [`BLOGS_Markdown/RISCV_ISA/zicfilp.md`](BLOGS_Markdown/RISCV_ISA/zicfilp.md) | Introduction to the **Zicfilp** extension, Landing Pads (LPAD), forward-edge control-flow protection, instruction encoding, execution flow, and practical examples. |
+| **[Blog 2 – Understanding the RISC-V Control-Flow Integrity (CFI) ISA (Part 2): Shadow Stack (Zicfiss)](https://randomchecking.hashnode.dev/understanding-the-risc-v-control-flow-integrity-cfi-isa-part-2-shadow-stack-zicfiss)** | [`BLOGS_Markdown/RISCV_ISA/zicfiss.md`](BLOGS_Markdown/RISCV_ISA/zicfiss.md) | Covers the **Zicfiss** extension, shadow stack architecture, return address protection, new ISA instructions, and how backward-edge CFI is enforced. |
+| **[Blog 3 – Understanding the RISC-V Control-Flow Integrity (CFI) ISA (Part 3): Privileged Architecture](https://randomchecking.hashnode.dev/understanding-the-risc-v-control-flow-integrity-cfi-isa-part-3-privileged-architecture)** | [`BLOGS_Markdown/RISCV_ISA/cfi_priv.md`](BLOGS_Markdown/RISCV_ISA/cfi_priv.md) | Explains the privileged architecture support required for CFI, including privilege-level interactions, exceptions, traps, and operating system responsibilities. |
+| **[Blog 4 – From a Simple FSM to Hardware Control-Flow Integrity: Understanding the Purpose of the RISC-V CFI Coding Challenge](https://randomchecking.hashnode.dev/from-a-simple-fsm-to-hardware-control-flow-integrity-understanding-the-purpose-of-the-risc-v-cfi-coding-challenge)** | [`BLOGS_Markdown/RISCV_ISA/challenge_relation.md`](BLOGS_Markdown/RISCV_ISA/challenge_relation.md) | Demonstrates how the coding challenge FSM models the fundamental concepts behind hardware Control-Flow Integrity and connects the simplified implementation to real RISC-V CFI mechanisms. |
+
+---
+
 # References / Learning Material
 
 ## CFI Specification
