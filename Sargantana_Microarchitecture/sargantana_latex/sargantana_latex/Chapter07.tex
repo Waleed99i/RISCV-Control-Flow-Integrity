@@ -27,9 +27,9 @@ Important RTL files include:
   \rtlitem{rtl/datapath/rtl/ir_stage/rtl/instruction_queue.sv}
 \end{rtlrefs}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.45\textwidth]{ch07_rename_overview.png}
+  \includegraphics[width=0.33\textwidth]{ch07_rename_overview.png}
   \caption{Rename stage: Instruction Queue, Renaming Tables, Free Lists, and Recovery Logic}
   \label{fig:rename-overview}
 \end{figure}
@@ -100,9 +100,9 @@ The Free List keeps track of unused physical registers.
 
 Whenever an instruction requires a destination register, the allocation proceeds as shown below.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.55\textwidth]{ch07_physical_register_allocation.png}
+  \includegraphics[width=0.3\textwidth]{ch07_physical_register_allocation.png}
   \caption{Physical register allocation flow: Instruction arrives $\rightarrow$ Request Physical Register $\rightarrow$ Free List selects register $\rightarrow$ Rename Table updated}
   \label{fig:phys-reg-alloc}
 \end{figure}

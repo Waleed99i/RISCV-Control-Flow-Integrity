@@ -25,9 +25,9 @@ The top-level execution module is:
 This module acts as the dispatcher for all execution units and interfaces with the Load/Store
 subsystem, scoreboards, writeback logic and pipeline control.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.55\textwidth]{ch09_execution_overview.png}
+  \includegraphics[width=0.43\textwidth]{ch09_execution_overview.png}
   \caption{Execution stage overview: RR-to-EXE dispatch to Mem, ALU, Mul/Div, SIMD, FPU, and BrU}
   \label{fig:execution-overview}
 \end{figure}
@@ -151,9 +151,9 @@ unit according to its opcode.
 
 The execution flow can be summarized as shown in Figure~\ref{fig:execution-flow}.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.7\textwidth]{ch09_execution_pipeline_flow.png}
+  \includegraphics[width=0.6\textwidth]{ch09_execution_pipeline_flow.png}
   \caption{Execution pipeline flow: dispatch through \texttt{exe\_stage.sv} to the functional units and result generation}
   \label{fig:execution-flow}
 \end{figure}
@@ -171,9 +171,9 @@ operations:
 These modules allow Sargantana to support out-of-order execution while maintaining correct
 instruction dependencies.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.55\textwidth]{ch09_execution_detail.png}
+  \includegraphics[width=0.28\textwidth]{ch09_execution_detail.png}
   \caption{Detailed execution-stage datapath, including the D-cache interface and auxiliary queues}
   \label{fig:execution-detail}
 \end{figure}

@@ -24,9 +24,9 @@ Primary implementation:
 This stage receives renamed instructions from the Rename stage and forwards operand values
 toward the Execution stage.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{ch08_register_read_overview.png}
+  \includegraphics[width=0.42\textwidth]{ch08_register_read_overview.png}
   \caption{Register Read stage: RFiles, Bypass, and Collision Detection}
   \label{fig:register-read-overview}
 \end{figure}
@@ -87,7 +87,7 @@ Waiting for every instruction to write back before reading operands would signif
 performance. To minimize stalls, recently computed values may be forwarded directly from
 execution units.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{ch08_bypass_network.png}
   \caption{Conceptual bypass path: ALU Result $\rightarrow$ Bypass Network $\rightarrow$ Register Read Stage $\rightarrow$ Execution}
