@@ -13,7 +13,7 @@ floating-point, SIMD and memory operations simultaneously.
 The entire execution subsystem is implemented under:
 
 \begin{center}
-\rtl{rtl/datapath/rtl/exe\_stage/}
+\rtldir{rtl/datapath/rtl/exe\_stage/}
 \end{center}
 
 The top-level execution module is:
@@ -25,7 +25,7 @@ The top-level execution module is:
 This module acts as the dispatcher for all execution units and interfaces with the Load/Store
 subsystem, scoreboards, writeback logic and pipeline control.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.43\textwidth]{ch09_execution_overview.png}
   \caption{Execution stage overview: RR-to-EXE dispatch to Mem, ALU, Mul/Div, SIMD, FPU, and BrU}
@@ -51,12 +51,12 @@ Internally, the ALU is divided into the following modules:
 \textbf{RTL File} & \textbf{Function} \\
 \midrule
 \endhead
-\rtl{alu\_add.sv} & Addition and subtraction \\
-\rtl{alu\_logic.sv} & AND, OR, XOR operations \\
-\rtl{alu\_shift.sv} & Logical and arithmetic shifts \\
-\rtl{alu\_cmp.sv} & Comparison instructions (SLT, SLTU, etc.) \\
-\rtl{alu\_count\_pop.sv} & Population count instructions \\
-\rtl{zero\_counter/alu\_count\_zeros.sv} & Leading/trailing zero count operations \\
+\rtlx{alu\_add.sv}{rtl/datapath/rtl/exe_stage/rtl/alu/alu_add.sv} & Addition and subtraction \\
+\rtlx{alu\_logic.sv}{rtl/datapath/rtl/exe_stage/rtl/alu/alu_logic.sv} & AND, OR, XOR operations \\
+\rtlx{alu\_shift.sv}{rtl/datapath/rtl/exe_stage/rtl/alu/alu_shift.sv} & Logical and arithmetic shifts \\
+\rtlx{alu\_cmp.sv}{rtl/datapath/rtl/exe_stage/rtl/alu/alu_cmp.sv} & Comparison instructions (SLT, SLTU, etc.) \\
+\rtlx{alu\_count\_pop.sv}{rtl/datapath/rtl/exe_stage/rtl/alu/alu_count_pop.sv} & Population count instructions \\
+\rtlx{zero\_counter/alu\_count\_zeros.sv}{rtl/datapath/rtl/exe_stage/rtl/alu/zero_counter/alu_count_zeros.sv} & Leading/trailing zero count operations \\
 \bottomrule
 \end{longtable}
 
@@ -141,7 +141,7 @@ The responsibilities of these modules include:
   \item Interface with the memory hierarchy
 \end{itemize}
 
-The dedicated Address Generation Unit (\rtl{vagu.sv}) computes effective memory addresses
+The dedicated Address Generation Unit (\rtlx{vagu.sv}{rtl/datapath/rtl/exe_stage/rtl/vagu.sv}) computes effective memory addresses
 before memory accesses are issued.
 
 \section{Execution Pipeline Flow}
@@ -151,7 +151,7 @@ unit according to its opcode.
 
 The execution flow can be summarized as shown in Figure~\ref{fig:execution-flow}.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.6\textwidth]{ch09_execution_pipeline_flow.png}
   \caption{Execution pipeline flow: dispatch through \texttt{exe\_stage.sv} to the functional units and result generation}
@@ -162,16 +162,16 @@ The execution stage also integrates several auxiliary modules that coordinate lo
 operations:
 
 \begin{rtlrefs}
-  \rtlitem{pending_mem_req_queue.sv}
-  \rtlitem{pending_fp_ops_queue.sv}
-  \rtlitem{score_board_scalar.sv}
-  \rtlitem{score_board_simd.sv}
+  \rtlitemx{pending_mem_req_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/pending_mem_req_queue.sv}
+  \rtlitemx{pending_fp_ops_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/pending_fp_ops_queue.sv}
+  \rtlitemx{score_board_scalar.sv}{rtl/datapath/rtl/exe_stage/rtl/score_board_scalar.sv}
+  \rtlitemx{score_board_simd.sv}{rtl/datapath/rtl/exe_stage/rtl/score_board_simd.sv}
 \end{rtlrefs}
 
 These modules allow Sargantana to support out-of-order execution while maintaining correct
 instruction dependencies.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.28\textwidth]{ch09_execution_detail.png}
   \caption{Detailed execution-stage datapath, including the D-cache interface and auxiliary queues}

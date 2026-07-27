@@ -9,27 +9,27 @@
 \endhead
 
 Chapter 9. Execution Stage &
-\rtl{exe\_stage.sv}, \rtl{alu.sv}, \rtl{alu\_add.sv}, \rtl{alu\_logic.sv}, \rtl{alu\_shift.sv}, \rtl{alu\_cmp.sv}, \rtl{branch\_unit.sv}, \rtl{mul\_unit.sv}, \rtl{div\_unit.sv}, \rtl{mem\_unit.sv}, \rtl{vagu.sv}, \rtl{load\_store\_queue.sv}, \rtl{store\_buffer.sv}, \rtl{score\_board\_scalar.sv}, \rtl{score\_board\_simd.sv}, \rtl{pending\_mem\_req\_queue.sv}, \rtl{pending\_fp\_ops\_queue.sv}
+\rtlx{exe\_stage.sv}{rtl/datapath/rtl/exe_stage/rtl/exe_stage.sv}, \rtlx{alu.sv}{rtl/datapath/rtl/exe_stage/rtl/alu/alu.sv}, \rtlx{alu\_add.sv}{rtl/datapath/rtl/exe_stage/rtl/alu/alu_add.sv}, \rtlx{alu\_logic.sv}{rtl/datapath/rtl/exe_stage/rtl/alu/alu_logic.sv}, \rtlx{alu\_shift.sv}{rtl/datapath/rtl/exe_stage/rtl/alu/alu_shift.sv}, \rtlx{alu\_cmp.sv}{rtl/datapath/rtl/exe_stage/rtl/alu/alu_cmp.sv}, \rtlx{branch\_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/branch_unit.sv}, \rtlx{mul\_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/mul_unit.sv}, \rtlx{div\_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/div_unit.sv}, \rtlx{mem\_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/mem_unit.sv}, \rtlx{vagu.sv}{rtl/datapath/rtl/exe_stage/rtl/vagu.sv}, \rtlx{load\_store\_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/load_store_queue.sv}, \rtlx{store\_buffer.sv}{rtl/datapath/rtl/exe_stage/rtl/store_buffer.sv}, \rtlx{score\_board\_scalar.sv}{rtl/datapath/rtl/exe_stage/rtl/score_board_scalar.sv}, \rtlx{score\_board\_simd.sv}{rtl/datapath/rtl/exe_stage/rtl/score_board_simd.sv}, \rtlx{pending\_mem\_req\_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/pending_mem_req_queue.sv}, \rtlx{pending\_fp\_ops\_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/pending_fp_ops_queue.sv}
 & \ding{51}\ Fully supported \\
 \addlinespace
 
 Chapter 10. Memory Subsystem &
-\rtl{mem\_unit.sv}, \rtl{vagu.sv}, \rtl{load\_store\_queue.sv}, \rtl{store\_buffer.sv}, \rtl{pending\_mem\_req\_queue.sv}
+\rtlx{mem\_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/mem_unit.sv}, \rtlx{vagu.sv}{rtl/datapath/rtl/exe_stage/rtl/vagu.sv}, \rtlx{load\_store\_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/load_store_queue.sv}, \rtlx{store\_buffer.sv}{rtl/datapath/rtl/exe_stage/rtl/store_buffer.sv}, \rtlx{pending\_mem\_req\_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/pending_mem_req_queue.sv}
 & \ding{51}\ Mostly supported \\
 \addlinespace
 
 Chapter 11. Writeback Stage &
-\rtl{wb\_stage/rtl/graduation\_list.sv}, completion signals coming from execution units
+\rtlx{wb\_stage/rtl/graduation\_list.sv}{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}, completion signals coming from execution units
 & $\triangle$ Partially supported \\
 \addlinespace
 
 Chapter 12. Commit Stage &
-\rtl{wb\_stage/rtl/graduation\_list.sv}, \rtl{ir\_stage/rtl/rename\_table.sv}, \rtl{free\_list.sv}, scoreboard modules
+\rtlx{wb\_stage/rtl/graduation\_list.sv}{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}, \rtlx{ir\_stage/rtl/rename\_table.sv}{rtl/datapath/rtl/ir_stage/rtl/rename_table.sv}, \rtlx{free\_list.sv}{rtl/datapath/rtl/ir_stage/rtl/free_list.sv}, scoreboard modules
 & $\triangle$ Commit logic exists but there is no standalone ROB module \\
 \addlinespace
 
 Chapter 13. Recovery Mechanisms &
-\rtl{branch\_unit.sv}, \rtl{branch\_predictor.sv}, \rtl{return\_address\_stack.sv}, \rtl{control\_unit.sv}, rename/free-list recovery logic
+\rtlx{branch\_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/branch_unit.sv}, \rtlx{branch\_predictor.sv}{rtl/datapath/rtl/if_stage_1/rtl/branch_predictor.sv}, \rtlx{return\_address\_stack.sv}{rtl/datapath/rtl/if_stage_1/rtl/return_address_stack.sv}, \rtlx{control\_unit.sv}{rtl/control_unit/rtl/control_unit.sv}, rename/free-list recovery logic
 & $\triangle$ Supported through distributed logic rather than one recovery module \\
 
 \bottomrule
@@ -125,29 +125,29 @@ Commit & Instruction Retirement / Graduation \\
 \textbf{Module} & \textbf{Description} \\
 \midrule
 \endhead
-\rtl{datapath.sv} & Top-level datapath implementation \\
-\rtl{control\_unit.sv} & Processor control logic \\
-\rtl{if\_stage\_1.sv} & First instruction fetch stage \\
-\rtl{if\_stage\_2.sv} & Second instruction fetch stage \\
-\rtl{decoder.sv} & Instruction decoder \\
-\rtl{immediate.sv} & Immediate value generator \\
-\rtl{rename\_table.sv} & Register alias table \\
-\rtl{free\_list.sv} & Physical register allocator \\
-\rtl{instruction\_queue.sv} & Issue queue \\
-\rtl{regfile.sv} & Physical register file \\
-\rtl{exe\_stage.sv} & Top-level execution stage \\
-\rtl{branch\_unit.sv} & Branch execution logic \\
-\rtl{alu.sv} & Arithmetic Logic Unit \\
-\rtl{div\_unit.sv} & Integer divider \\
-\rtl{mul\_unit.sv} & Integer multiplier \\
-\rtl{mem\_unit.sv} & Memory execution unit \\
-\rtl{load\_store\_queue.sv} & Load/Store Queue \\
-\rtl{pending\_mem\_req\_queue.sv} & Pending memory request tracker \\
-\rtl{pending\_fp\_ops\_queue.sv} & Pending floating-point operations \\
-\rtl{score\_board\_scalar.sv} & Scalar dependency scoreboard \\
-\rtl{score\_board\_simd.sv} & SIMD dependency scoreboard \\
-\rtl{graduation\_list.sv} & Instruction commit list \\
-\rtl{csr\_interface.sv} & CSR interface logic \\
+\rtlx{datapath.sv}{rtl/datapath/rtl/datapath.sv} & Top-level datapath implementation \\
+\rtlx{control\_unit.sv}{rtl/control_unit/rtl/control_unit.sv} & Processor control logic \\
+\rtlx{if\_stage\_1.sv}{rtl/datapath/rtl/if_stage_1/rtl/if_stage_1.sv} & First instruction fetch stage \\
+\rtlx{if\_stage\_2.sv}{rtl/datapath/rtl/if_stage_2/rtl/if_stage_2.sv} & Second instruction fetch stage \\
+\rtlx{decoder.sv}{rtl/datapath/rtl/id_stage/rtl/decoder.sv} & Instruction decoder \\
+\rtlx{immediate.sv}{rtl/datapath/rtl/id_stage/rtl/immediate.sv} & Immediate value generator \\
+\rtlx{rename\_table.sv}{rtl/datapath/rtl/ir_stage/rtl/rename_table.sv} & Register alias table \\
+\rtlx{free\_list.sv}{rtl/datapath/rtl/ir_stage/rtl/free_list.sv} & Physical register allocator \\
+\rtlx{instruction\_queue.sv}{rtl/datapath/rtl/ir_stage/rtl/instruction_queue.sv} & Issue queue \\
+\rtlx{regfile.sv}{rtl/datapath/rtl/rr_stage/rtl/regfile.sv} & Physical register file \\
+\rtlx{exe\_stage.sv}{rtl/datapath/rtl/exe_stage/rtl/exe_stage.sv} & Top-level execution stage \\
+\rtlx{branch\_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/branch_unit.sv} & Branch execution logic \\
+\rtlx{alu.sv}{rtl/datapath/rtl/exe_stage/rtl/alu/alu.sv} & Arithmetic Logic Unit \\
+\rtlx{div\_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/div_unit.sv} & Integer divider \\
+\rtlx{mul\_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/mul_unit.sv} & Integer multiplier \\
+\rtlx{mem\_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/mem_unit.sv} & Memory execution unit \\
+\rtlx{load\_store\_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/load_store_queue.sv} & Load/Store Queue \\
+\rtlx{pending\_mem\_req\_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/pending_mem_req_queue.sv} & Pending memory request tracker \\
+\rtlx{pending\_fp\_ops\_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/pending_fp_ops_queue.sv} & Pending floating-point operations \\
+\rtlx{score\_board\_scalar.sv}{rtl/datapath/rtl/exe_stage/rtl/score_board_scalar.sv} & Scalar dependency scoreboard \\
+\rtlx{score\_board\_simd.sv}{rtl/datapath/rtl/exe_stage/rtl/score_board_simd.sv} & SIMD dependency scoreboard \\
+\rtlx{graduation\_list.sv}{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv} & Instruction commit list \\
+\rtlx{csr\_interface.sv}{rtl/datapath/rtl/interface_csr/rtl/csr_interface.sv} & CSR interface logic \\
 \bottomrule
 \end{longtable}
 \endgroup

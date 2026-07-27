@@ -22,14 +22,14 @@ This stage forms the interface between instruction fetch and out-of-order execut
   \rtlitem{rtl/datapath/rtl/id_stage/rtl/immediate.sv}
 \end{rtlrefs}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.28\textwidth]{ch06_decode_overview.png}
   \caption{Decode stage: F2-to-D $\rightarrow$ Decoder $\rightarrow$ Instruction Queue}
   \label{fig:decode-overview}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.26\textwidth]{ch06_decode_detail.png}
   \caption{Detailed signal view of the Decode stage}
@@ -149,7 +149,7 @@ renaming before dispatching instructions toward execution.
   \rtlitem{rtl/datapath/rtl/ir_stage/rtl/instruction_queue.sv}
 \end{rtlrefs}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.55\textwidth]{ch06_decode_to_rename.png}
   \caption{Decoded instructions flowing from the Decode stage into the Rename stage}
@@ -171,7 +171,7 @@ The cases are:
 
 In the following figure we can see all the cases mentioned above.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{ch06_decoder_waveform.png}
   \caption{Decoder timing waveform illustrating the six example cases}

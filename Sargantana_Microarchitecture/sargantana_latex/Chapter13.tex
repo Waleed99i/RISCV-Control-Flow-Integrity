@@ -12,7 +12,7 @@ architectural state.
 This section covers:
 \begin{itemize}
   \item Branch prediction in IF Stage 1
-  \item Actual branch resolution in the Execution Stage (\rtl{branch\_unit.sv})
+  \item Actual branch resolution in the Execution Stage (\rtlx{branch\_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/branch_unit.sv})
   \item Detection of incorrect prediction
   \item Redirecting the Program Counter
   \item Flushing younger speculative instructions
@@ -20,14 +20,14 @@ This section covers:
 \end{itemize}
 
 \begin{rtlrefs}
-  \rtlitem{rtl/datapath/rtl/if_stage_1/branch_predictor.sv}
-  \rtlitem{rtl/datapath/rtl/if_stage_1/bimodal_predictor.sv}
-  \rtlitem{rtl/datapath/rtl/if_stage_1/return_address_stack.sv}
-  \rtlitem{rtl/datapath/rtl/exe_stage/branch_unit.sv}
-  \rtlitem{rtl/datapath/rtl/ir_stage/rename_table.sv}
-  \rtlitem{rtl/datapath/rtl/ir_stage/free_list.sv}
-  \rtlitem{rtl/datapath/rtl/exe_stage/score_board_scalar.sv}
-  \rtlitem{rtl/datapath/rtl/exe_stage/score_board_simd.sv}
+  \rtlitemx{rtl/datapath/rtl/if_stage_1/branch_predictor.sv}{rtl/datapath/rtl/if_stage_1/rtl/branch_predictor.sv}
+  \rtlitemx{rtl/datapath/rtl/if_stage_1/bimodal_predictor.sv}{rtl/datapath/rtl/if_stage_1/rtl/bimodal_predictor.sv}
+  \rtlitemx{rtl/datapath/rtl/if_stage_1/return_address_stack.sv}{rtl/datapath/rtl/if_stage_1/rtl/return_address_stack.sv}
+  \rtlitemx{rtl/datapath/rtl/exe_stage/branch_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/branch_unit.sv}
+  \rtlitemx{rtl/datapath/rtl/ir_stage/rename_table.sv}{rtl/datapath/rtl/ir_stage/rtl/rename_table.sv}
+  \rtlitemx{rtl/datapath/rtl/ir_stage/free_list.sv}{rtl/datapath/rtl/ir_stage/rtl/free_list.sv}
+  \rtlitemx{rtl/datapath/rtl/exe_stage/score_board_scalar.sv}{rtl/datapath/rtl/exe_stage/rtl/score_board_scalar.sv}
+  \rtlitemx{rtl/datapath/rtl/exe_stage/score_board_simd.sv}{rtl/datapath/rtl/exe_stage/rtl/score_board_simd.sv}
   \rtlitem{rtl/control_unit/rtl/control_unit.sv}
 \end{rtlrefs}
 
@@ -44,9 +44,9 @@ This section covers:
 \end{itemize}
 
 \begin{rtlrefs}
-  \rtlitem{rtl/csr/}
-  \rtlitem{rtl/datapath/rtl/interface_csr/csr_interface.sv}
-  \rtlitem{rtl/control_unit/}
+  \rtlitemdir{rtl/csr/}
+  \rtlitemx{rtl/datapath/rtl/interface_csr/csr_interface.sv}{rtl/datapath/rtl/interface_csr/rtl/csr_interface.sv}
+  \rtlitemdir{rtl/control_unit/}
 \end{rtlrefs}
 
 \section{Pipeline Flush Mechanism}
@@ -62,10 +62,10 @@ This section covers:
 \end{itemize}
 
 \begin{rtlrefs}
-  \rtlitem{rtl/control_unit/}
+  \rtlitemdir{rtl/control_unit/}
   \rtlitem{rtl/datapath/rtl/exe_stage/rtl/pending_mem_req_queue.sv}
   \rtlitem{rtl/datapath/rtl/exe_stage/rtl/pending_fp_ops_queue.sv}
-  \rtlitem{rtl/datapath/rtl/exe_stage/rtl/pending_vfp_ops_queue.sv}
+  \rtlitemx{rtl/datapath/rtl/exe_stage/rtl/pending_vfp_ops_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/simd/pending_vfp_ops_queue.sv}
   \rtlitem{rtl/datapath/rtl/exe_stage/rtl/load_store_queue.sv}
   \rtlitem{rtl/datapath/rtl/exe_stage/rtl/score_board_scalar.sv}
   \rtlitem{rtl/datapath/rtl/exe_stage/rtl/score_board_simd.sv}
@@ -82,7 +82,7 @@ This section covers:
 \end{itemize}
 
 \begin{rtlrefs}
-  \rtlitem{rtl/datapath/rtl/if_stage_1/}
-  \rtlitem{rtl/datapath/rtl/ir_stage/}
-  \rtlitem{rtl/control_unit/}
+  \rtlitemdir{rtl/datapath/rtl/if_stage_1/}
+  \rtlitemdir{rtl/datapath/rtl/ir_stage/}
+  \rtlitemdir{rtl/control_unit/}
 \end{rtlrefs}

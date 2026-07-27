@@ -16,7 +16,7 @@ The fetch subsystem is divided into two pipeline stages:
 This separation enables the processor to overlap instruction fetching with cache access and
 branch prediction, thereby improving instruction throughput.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.5\textwidth]{ch04_fetch_f1_f2.png}
   \caption{Fetch Stage 1 and Fetch Stage 2 organization}
@@ -73,7 +73,7 @@ minimizing pipeline stalls.
 Fetch Stage 2 receives the fetched instruction and associated prediction information from the
 instruction cache.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.24\textwidth]{ch04_fetch_unit_detail.png}
   \caption{Internal detail of the Fetch Unit: PC, +4 adder, ICache interface, and branch prediction}

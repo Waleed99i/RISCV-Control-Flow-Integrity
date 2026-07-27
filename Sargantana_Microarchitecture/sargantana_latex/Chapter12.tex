@@ -19,7 +19,7 @@ architecturally permanent.
   \rtlitem{rtl/datapath/rtl/datapath.sv}
 \end{rtlrefs}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.9\textwidth]{ch12_commit_overview.png}
   \caption{Commit stage in context, highlighting the decode-to-commit control path}
@@ -28,7 +28,7 @@ architecturally permanent.
 
 \section{Reorder Buffer (ROB)}
 
-Although the repository does not contain a standalone module named \rtl{rob.sv}, the
+Although the repository does not contain a standalone module named \rtlnolink{rob.sv}, the
 reorder/retirement functionality is implemented through the \textbf{Graduation List}, together with the
 rename structures and control logic.
 
@@ -56,7 +56,7 @@ Buffer (ROB).
   \rtlitem{rtl/datapath/rtl/ir_stage/rtl/free_list.sv}
 \end{rtlrefs}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{ch12_reorder_buffer.png}
   \caption{Graduation List acting as the Reorder Buffer: recovery and commit signal paths highlighted}
@@ -119,7 +119,7 @@ This behavior is one of the major advantages of separating execution from retire
 \begin{rtlrefs}
   \rtlitem{rtl/control_unit/rtl/control_unit.sv}
   \rtlitem{rtl/datapath/rtl/wb_stage/rtl/graduation_list.sv}
-  \rtlitem{rtl/datapath/interface_csr/rtl/csr_interface.sv}
+  \rtlitemx{rtl/datapath/interface_csr/rtl/csr_interface.sv}{rtl/datapath/rtl/interface_csr/rtl/csr_interface.sv}
 \end{rtlrefs}
 
 \section{Pipeline Flush and Recovery}

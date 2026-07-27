@@ -53,40 +53,40 @@ accompanying documentation. The specific objectives include:
 
 \section{Repository Organization}
 
-\begin{longtable}{@{}p{0.40\textwidth}p{0.55\textwidth}@{}}
+\begin{longtable}{@{}p{0.44\textwidth}p{0.51\textwidth}@{}}
 \toprule
 \textbf{Directory / File} & \textbf{Description} \\
 \midrule
 \endhead
-\rtl{rtl/} & Core RTL implementation \\
+\rtldir{rtl/} & Core RTL implementation \\
 \rtl{rtl/top\_drac.sv} & Top-level module instantiating datapath, CSR, MMU, HPM \\
-\rtl{rtl/datapath/} & Pipeline stages and execution units \\
+\rtldir{rtl/datapath/} & Pipeline stages and execution units \\
 \rtl{rtl/datapath/rtl/datapath.sv} & Top-level datapath implementation \\
-\rtl{rtl/datapath/rtl/if\_stage\_1/} & Instruction fetch + branch prediction \\
-\rtl{rtl/datapath/rtl/if\_stage\_2/} & Fetch buffer \\
-\rtl{rtl/datapath/rtl/id\_stage/} & Instruction decode \\
-\rtl{rtl/datapath/rtl/ir\_stage/} & Instruction rename (register renaming, free list) \\
-\rtl{rtl/datapath/rtl/rr\_stage/} & Register read \\
-\rtl{rtl/datapath/rtl/exe\_stage/} & Execution with ALU, FPU, SIMD, load/store/div units \\
-\rtl{rtl/datapath/rtl/wb\_stage/} & Write-back and graduation \\
-\rtl{rtl/control\_unit/} & Control logic \\
+\rtldir{rtl/datapath/rtl/if\_stage\_1/} & Instruction fetch + branch prediction \\
+\rtldir{rtl/datapath/rtl/if\_stage\_2/} & Fetch buffer \\
+\rtldir{rtl/datapath/rtl/id\_stage/} & Instruction decode \\
+\rtldir{rtl/datapath/rtl/ir\_stage/} & Instruction rename (register renaming, free list) \\
+\rtldir{rtl/datapath/rtl/rr\_stage/} & Register read \\
+\rtldir{rtl/datapath/rtl/exe\_stage/} & Execution with ALU, FPU, SIMD, load/store/div units \\
+\rtldir{rtl/datapath/rtl/wb\_stage/} & Write-back and graduation \\
+\rtldir{rtl/control\_unit/} & Control logic \\
 \rtl{rtl/control\_unit/rtl/control\_unit.sv} & Top-level control unit module \\
-\rtl{rtl/csr/} & Control/Status Registers and HPM counters (submodule) $\rightarrow$ empty \\
-\rtl{rtl/mmu/} & Memory Management Unit (submodule) $\rightarrow$ empty \\
-\rtl{rtl/common\_cells/} & PULP platform utilities (lzc, fifo, arbiter, etc.) $\rightarrow$ empty \\
-\texttt{doc/} & Documentation \\
-\texttt{doc/specifications/} & Detailed module specifications (LaTeX) \\
-\texttt{doc/riscv-spec.pdf} & RISC-V ISA specification \\
-\texttt{doc/riscv-privileged.pdf} & RISC-V privileged specification \\
-\texttt{doc/sargantana\_pipeline.svg} & Pipeline diagram \\
-\texttt{scripts/} & CI and verification utilities \\
-\texttt{scripts/veri\_lint.sh} & Verilator linting \\
-\texttt{scripts/questa\_ci.sh} & Questa ModelSim simulation \\
-\texttt{scripts/spyglass\_ci.sh} & Static analysis (Spyglass) \\
-\texttt{scripts/parse-yaml-fpnew.py} & FPU configuration \\
-\texttt{tb/} & Testbenches \\
-\texttt{tb/tb\_top/} & Top-level test vectors (RISC-V vector assembly) \\
-\texttt{includes/} & Shared packages \\
+\rtldir{rtl/csr/} & Control/Status Registers and HPM counters (submodule) $\rightarrow$ empty \\
+\rtldir{rtl/mmu/} & Memory Management Unit (submodule) $\rightarrow$ empty \\
+\rtldir{rtl/common\_cells/} & PULP platform utilities (lzc, fifo, arbiter, etc.) $\rightarrow$ empty \\
+\rtldir{doc/} & Documentation \\
+\rtldir{doc/specifications/} & Detailed module specifications (LaTeX) \\
+\rtl{doc/riscv-spec.pdf} & RISC-V ISA specification \\
+\rtl{doc/riscv-privileged.pdf} & RISC-V privileged specification \\
+\rtl{doc/sargantana\_pipeline.svg} & Pipeline diagram \\
+\rtldir{scripts/} & CI and verification utilities \\
+\rtl{scripts/veri\_lint.sh} & Verilator linting \\
+\rtl{scripts/questa\_ci.sh} & Questa ModelSim simulation \\
+\rtl{scripts/spyglass\_ci.sh} & Static analysis (Spyglass) \\
+\rtl{scripts/parse-yaml-fpnew.py} & FPU configuration \\
+\rtldir{tb/} & Testbenches \\
+\rtldir{tb/tb\_top/} & Top-level test vectors (RISC-V vector assembly) \\
+\rtldir{includes/} & Shared packages \\
 \rtl{includes/drac\_pkg.sv} & Configuration and types \\
 \rtl{includes/riscv\_pkg.sv} & RISC-V constants \\
 \rtl{includes/def\_pkg.sv} & General definitions \\

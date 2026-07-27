@@ -12,7 +12,7 @@ In Sargantana, the Register Read stage is centered around the physical register 
 RTL location:
 
 \begin{center}
-\rtl{rtl/datapath/rtl/rr\_stage/}
+\rtldir{rtl/datapath/rtl/rr\_stage/}
 \end{center}
 
 Primary implementation:
@@ -24,7 +24,7 @@ Primary implementation:
 This stage receives renamed instructions from the Rename stage and forwards operand values
 toward the Execution stage.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.42\textwidth]{ch08_register_read_overview.png}
   \caption{Register Read stage: RFiles, Bypass, and Collision Detection}
@@ -87,7 +87,7 @@ Waiting for every instruction to write back before reading operands would signif
 performance. To minimize stalls, recently computed values may be forwarded directly from
 execution units.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{ch08_bypass_network.png}
   \caption{Conceptual bypass path: ALU Result $\rightarrow$ Bypass Network $\rightarrow$ Register Read Stage $\rightarrow$ Execution}

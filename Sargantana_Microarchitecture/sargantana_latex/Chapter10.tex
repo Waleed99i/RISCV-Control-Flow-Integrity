@@ -22,10 +22,10 @@ These modules collectively implement the processor's memory execution pipeline.
 \section{Load Operations}
 
 When a load instruction reaches the Execution stage, the effective address is first computed by
-the Address Generation Unit (\rtl{vagu.sv}). The request is then inserted into the Load/Store
+the Address Generation Unit (\rtlx{vagu.sv}{rtl/datapath/rtl/exe_stage/rtl/vagu.sv}). The request is then inserted into the Load/Store
 Queue, which manages pending memory operations.
 
-The Memory Unit (\rtl{mem\_unit.sv}) communicates with the cache hierarchy and retrieves the
+The Memory Unit (\rtlx{mem\_unit.sv}{rtl/datapath/rtl/exe_stage/rtl/mem_unit.sv}) communicates with the cache hierarchy and retrieves the
 requested data. Once the data becomes available, it is forwarded toward the Writeback stage,
 where it updates the corresponding physical register.
 
@@ -92,10 +92,10 @@ and scoreboard structures.
 The relevant RTL modules include:
 
 \begin{rtlrefs}
-  \rtlitem{load_store_queue.sv}
-  \rtlitem{store_buffer.sv}
-  \rtlitem{pending_mem_req_queue.sv}
-  \rtlitem{score_board_scalar.sv}
+  \rtlitemx{load_store_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/load_store_queue.sv}
+  \rtlitemx{store_buffer.sv}{rtl/datapath/rtl/exe_stage/rtl/store_buffer.sv}
+  \rtlitemx{pending_mem_req_queue.sv}{rtl/datapath/rtl/exe_stage/rtl/pending_mem_req_queue.sv}
+  \rtlitemx{score_board_scalar.sv}{rtl/datapath/rtl/exe_stage/rtl/score_board_scalar.sv}
 \end{rtlrefs}
 
 Together, these modules track outstanding memory requests, preserve dependencies between

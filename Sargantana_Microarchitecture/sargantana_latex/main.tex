@@ -18,22 +18,49 @@
 \usepackage{amssymb}
 \usepackage{caption}
 \usepackage{pifont} % for \ding checkmark symbols
-\usepackage{float}  % for [H] "exactly here" figure placement, so figures stay with their topic
+\usepackage{float}  % provides [H] if ever needed, kept as a dependency
+\usepackage[section]{placeins} % auto-inserts a float barrier at every \section, so
+                                % figures can't drift past their own section -- keeps
+                                % them close to topic -- while still allowing LaTeX's
+                                % normal page-filling algorithm to avoid blank gaps
+\usepackage[normalem]{ulem} % \uline supports underlines that break across lines (needed for long RTL paths in tables)
 
 % ---------- Colors ----------
-% Per author request: the document body (titles, headings, links) is black.
-% Only RTL/.sv file paths get a distinguishing style so they still stand out
-% as "code", but without using a loud color like blue/green.
-\definecolor{rtlgray}{gray}{0.35}      % dark gray "code" tone for RTL paths (reads as near-black)
+% Per author request: the document body (titles, headings, links) is black,
+% except RTL/.sv file paths, which are real clickable links to the GitHub
+% repository, styled blue + underlined so they read as links.
+\newcommand{\rtlrepobase}{https://github.com/bsc-loca/sargantana/blob/main/}
+\newcommand{\rtltreebase}{https://github.com/bsc-loca/sargantana/tree/main/}
 
-% ---------- Custom command for RTL file paths ----------
-% Distinguishes RTL paths as "code" via italic monospace in a muted dark-gray
-% tone, instead of a colored highlight box. A background \colorbox cannot
-% break across lines, which overflowed long paths inside table cells, so
-% plain (unboxed) styled text is used here -- it wraps normally via \url,
-% which breaks properly at "/" and "_". soul.sty is not available in this build.
+% ---------- Custom commands for RTL file paths ----------
+% Displays the RTL path text exactly as written, but hyperlinks it to the
+% corresponding file on GitHub (bsc-loca/sargantana, main branch). Styled
+% blue + underlined like a normal hyperlink. \uline (from ulem) is used
+% instead of the LaTeX-kernel \underline because it breaks correctly across
+% lines -- important since long RTL paths need to wrap inside table cells.
+% \nolinkurl (from hyperref) is used for the displayed text instead of plain
+% \url: with colorlinks=true, hyperref makes \url itself a colored link using
+% urlcolor, which silently overrode our \textcolor{blue} and left the link
+% TEXT black (only the \uline rule stayed blue). \nolinkurl formats identically
+% (monospace, breaks at "/" and "_") but creates no link/color of its own, so
+% our outer \textcolor applies correctly to both text and underline.
 \urlstyle{tt}
-\newcommand{\rtl}[1]{\textit{\textcolor{rtlgray}{\url{#1}}}}
+% \rtl{path}          -- path text doubles as both the displayed text and the
+%                         URL (used when the written path is already correct).
+\newcommand{\rtl}[1]{\href{\rtlrepobase#1}{\textcolor{blue}{\uline{\nolinkurl{#1}}}}}
+% \rtlx{text}{path}   -- displays "text" exactly as written, but links to the
+%                         verified correct "path" (used when the written text
+%                         is a shorthand/partial path that doesn't match the
+%                         real repo layout).
+\newcommand{\rtlx}[2]{\href{\rtlrepobase#2}{\textcolor{blue}{\uline{\nolinkurl{#1}}}}}
+% \rtldir{path}       -- for directories: links to the GitHub tree view
+%                         instead of a blob view.
+\newcommand{\rtldir}[1]{\href{\rtltreebase#1}{\textcolor{blue}{\uline{\nolinkurl{#1}}}}}
+% \rtlnolink{path}    -- for a path mentioned in the text that does not
+%                         actually exist in the repo (e.g. rob.sv, which the
+%                         text explicitly notes is absent) -- styled like code
+%                         but not hyperlinked, so it doesn't point to a 404.
+\newcommand{\rtlnolink}[1]{\textit{\nolinkurl{#1}}}
 
 % A block for a list of RTL references (also highlighted, boxed)
 \newenvironment{rtlrefs}{%
@@ -46,6 +73,9 @@
   \end{quote}
 }
 \newcommand{\rtlitem}[1]{\item \rtl{#1}}
+\newcommand{\rtlitemx}[2]{\item \rtlx{#1}{#2}}
+\newcommand{\rtlitemdir}[1]{\item \rtldir{#1}}
+\newcommand{\rtlitemnolink}[1]{\item \rtlnolink{#1}}
 
 % ---------- Section numbering depth ----------
 \setcounter{secnumdepth}{3}
@@ -115,11 +145,9 @@
 
 \vspace{1.5cm}
 
-{\large Repository: \url{https://github.com/bsc-loca/sargantana}\par}
+{\large Repository: \href{https://github.com/bsc-loca/sargantana}{\textcolor{blue}{\uline{\nolinkurl{https://github.com/bsc-loca/sargantana}}}}\par}
 
 \vfill
-
-{\large \today\par}
 
 \end{titlepage}
 
