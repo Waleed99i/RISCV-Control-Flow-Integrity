@@ -302,6 +302,9 @@ A comprehensive study of the **Sargantana** out-of-order RISC-V processor based 
 ## Sargantana Repository
 - [Sargantana RISC-V Processor](https://github.com/bsc-loca/sargantana)
 
+## Sargantana Core Tile High Level Architecture Specification
+- [Sargantana_Core_Tile_High_Level_Architecture_Specification.pdf](References/Sargantana_Core_Tile_High_Level_Architecture_Specification.pdf)
+
 ## PDFs of Spec
 - [riscv-privileged.pdf](References/riscv-privileged.pdf)
 - [riscv-spec.pdf](References/riscv-spec.pdf)
