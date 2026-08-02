@@ -278,6 +278,21 @@ A comprehensive study of the **Sargantana** out-of-order RISC-V processor based 
 
 ---
 
+## Project Proposal
+A detailed Project Proposal describing my proposed implementation strategy for integrating both Zicfiss and Zicfilp into the Sargantana core. 
+
+[Proposal Link](Project_Proposal/CFI-PROPOSAL-WALEED.pdf)
+
+The proposal includes: 
+- High Level Project Architecture
+- A phased implementation plan 
+- RTL integration strategy 
+- Verification methodology 
+- Weekly timeline
+- Details about PRs
+
+---
+
 # References / Learning Material
 
 ## CFI Specification
