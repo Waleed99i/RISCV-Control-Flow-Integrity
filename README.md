@@ -18,12 +18,9 @@
 </p>
 
 
-<p align="center">
-  <img src="docs/riscv.png" alt="riscv" width="700">
-</p>
 
 
----
+
 
 ## Overview
 
@@ -255,18 +252,6 @@ Verification includes:
 
 ---
 
-# Future Work 
-
-POSSIBLE extensions may include:
-
-- Shadow Stack support
-- Landing Pad instruction decoding
-- Pipeline integration
-- RVFI compatibility
-- Sargantana core integration
-- RISC-V CFI ISA extension implementation
-
----
 
 ## Technical Blog Series
 
